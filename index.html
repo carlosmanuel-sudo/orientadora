@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Corte Superior de Justicia de Huaura - Orientación y Atención Judicial</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script>
     tailwind.config = {
       theme: {
@@ -27,64 +30,148 @@
   </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .font-cinzel { font-family: 'Cinzel', serif; }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-thumb { background: rgba(15, 41, 66, 0.2); border-radius: 9999px; }
-    @keyframes modalIn { from { opacity: 0; transform: translateY(12px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    .modal-anim { animation: modalIn 0.22s ease-out forwards; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .font-cinzel {
+      font-family: 'Cinzel', serif;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(15, 41, 66, 0.2);
+      border-radius: 9999px;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-anim {
+      animation: modalIn 0.22s ease-out forwards;
+    }
 
     /* ===== ALERTAS EN VIVO ===== */
     @keyframes alertIn {
-      from { opacity: 0; transform: translateX(-12px) scale(0.98); }
-      to   { opacity: 1; transform: translateX(0) scale(1); }
+      from {
+        opacity: 0;
+        transform: translateX(-12px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
     }
-    .alert-item { animation: alertIn 0.35s ease-out forwards; }
-    .alert-item.pulse-border { animation: alertIn 0.35s ease-out forwards, pulseBorder 2s ease-in-out infinite 0.35s; }
+
+    .alert-item {
+      animation: alertIn 0.35s ease-out forwards;
+    }
+
+    .alert-item.pulse-border {
+      animation: alertIn 0.35s ease-out forwards, pulseBorder 2s ease-in-out infinite 0.35s;
+    }
+
     @keyframes pulseBorder {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.35); }
-      50%      { box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.35);
+      }
+
+      50% {
+        box-shadow: 0 0 0 6px rgba(220, 38, 38, 0);
+      }
     }
+
     @keyframes livePulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: 0.4; transform: scale(0.85); }
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.85);
+      }
     }
-    .live-dot { animation: livePulse 1.4s ease-in-out infinite; }
-    .alerts-scroll::-webkit-scrollbar { width: 4px; }
-    .alerts-scroll::-webkit-scrollbar-thumb { background: rgba(15, 41, 66, 0.25); border-radius: 9999px; }
+
+    .live-dot {
+      animation: livePulse 1.4s ease-in-out infinite;
+    }
+
+    .alerts-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .alerts-scroll::-webkit-scrollbar-thumb {
+      background: rgba(15, 41, 66, 0.25);
+      border-radius: 9999px;
+    }
 
     /* ===== TABS DEL MODAL DE ALIMENTOS ===== */
     .tab-btn {
       transition: all 0.2s ease;
       cursor: pointer;
     }
+
     .tab-btn.active {
       background-color: #ffffff;
-      color: #0F2942; /* pjBlue */
+      color: #0F2942;
+      /* pjBlue */
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
+
     .tab-btn.active i {
-      color: #7B1113; /* pjRed */
+      color: #7B1113;
+      /* pjRed */
     }
+
     .tab-btn:not(.active):hover {
       color: #0F2942;
     }
+
     .tab-panel {
       display: none;
     }
+
     .tab-panel.active {
       display: block;
       animation: fadeTabIn 0.25s ease-out;
     }
+
     @keyframes fadeTabIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* ===== LISTA DE SEDES EN MODAL SERVICIOS ===== */
     .sede-card {
       transition: all 0.2s ease;
     }
+
     .sede-card:hover {
       border-color: rgba(123, 17, 19, 0.3);
       box-shadow: 0 4px 12px -2px rgba(15, 41, 66, 0.08);
@@ -92,32 +179,49 @@
 
     /* ===== ANIMACIÓN DE ALERTA ACTIVA EN BOTÓN DE PÁNICO ===== */
     @keyframes panicPulse {
-      0%, 100% {
+
+      0%,
+      100% {
         box-shadow: 0 0 0 8px rgba(185, 28, 28, 0.15), 0 0 25px rgba(185, 28, 28, 0.45);
         transform: scale(1);
       }
+
       50% {
         box-shadow: 0 0 0 14px rgba(185, 28, 28, 0.05), 0 0 40px rgba(185, 28, 28, 0.65);
         transform: scale(1.03);
       }
     }
+
     .panic-active {
       animation: panicPulse 1.8s ease-in-out infinite !important;
     }
+
     @keyframes ringPulse {
-      0% { transform: scale(0.95); opacity: 0.7; }
-      100% { transform: scale(1.15); opacity: 0; }
+      0% {
+        transform: scale(0.95);
+        opacity: 0.7;
+      }
+
+      100% {
+        transform: scale(1.15);
+        opacity: 0;
+      }
     }
+
     .panic-ring-active {
       animation: ringPulse 2s ease-out infinite !important;
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-slate-100 via-stone-100 to-slate-200 min-h-screen text-slate-800 flex flex-col antialiased selection:bg-pjRed selection:text-white">
+
+<body
+  class="bg-gradient-to-br from-slate-100 via-stone-100 to-slate-200 min-h-screen text-slate-800 flex flex-col antialiased selection:bg-pjRed selection:text-white">
 
   <!-- ===== MODAL SERVICIOS (con lista de sedes) ===== -->
-  <div id="service-modal" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
-    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[92vh] flex flex-col">
+  <div id="service-modal"
+    class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
+    <div
+      class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[92vh] flex flex-col">
       <!-- Header -->
       <div class="relative bg-gradient-to-r from-pjDarkRed via-pjRed to-pjBlue text-white p-4 sm:p-5 shrink-0">
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -126,7 +230,8 @@
         </div>
         <div class="flex items-start justify-between gap-3 relative">
           <div class="flex items-start gap-3 min-w-0">
-            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+            <div
+              class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
               <i class="fa-solid fa-shield-halved text-pjGold text-xl sm:text-2xl"></i>
             </div>
             <div class="min-w-0">
@@ -134,7 +239,8 @@
               <p id="modal-subtitle" class="text-[10px] sm:text-xs text-amber-200/90 mt-0.5"></p>
             </div>
           </div>
-          <button onclick="closeModal()" aria-label="Cerrar modal" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+          <button onclick="closeModal()" aria-label="Cerrar modal"
+            class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
             <i class="fa-solid fa-xmark text-sm"></i>
           </button>
         </div>
@@ -150,14 +256,17 @@
 
       <!-- Footer -->
       <div class="p-3 sm:p-4 border-t border-slate-200 bg-slate-50 shrink-0">
-        <button onclick="closeModal()" class="w-full py-2.5 px-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-100 transition active:scale-95">Cerrar</button>
+        <button onclick="closeModal()"
+          class="w-full py-2.5 px-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-100 transition active:scale-95">Cerrar</button>
       </div>
     </div>
   </div>
 
   <!-- ===== MODAL DEMANDA DE ALIMENTOS ===== -->
-  <div id="alimentos-modal" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
-    <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[92vh] flex flex-col">
+  <div id="alimentos-modal"
+    class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
+    <div
+      class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[92vh] flex flex-col">
       <div class="relative bg-gradient-to-r from-pjDarkRed via-pjRed to-pjBlue text-white p-4 sm:p-5 shrink-0">
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
           <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
@@ -165,7 +274,8 @@
         </div>
         <div class="flex items-start justify-between gap-3 relative">
           <div class="flex items-start gap-3 min-w-0">
-            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+            <div
+              class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
               <i class="fa-solid fa-scale-balanced text-pjGold text-xl sm:text-2xl"></i>
             </div>
             <div class="min-w-0">
@@ -173,17 +283,20 @@
               <p class="text-[10px] sm:text-xs text-amber-200/90 mt-0.5">Documentos que necesitas según tu caso</p>
             </div>
           </div>
-          <button onclick="closeAlimentosModal()" aria-label="Cerrar modal" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+          <button onclick="closeAlimentosModal()" aria-label="Cerrar modal"
+            class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
             <i class="fa-solid fa-xmark text-sm"></i>
           </button>
         </div>
       </div>
       <div class="px-3 sm:px-5 pt-3 sm:pt-4 shrink-0">
         <div class="grid grid-cols-2 gap-1.5 bg-slate-100 p-1 rounded-xl">
-          <button id="tab-menor" onclick="switchAlimentosTab('menor')" class="tab-btn active py-2 px-3 rounded-lg text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 text-slate-600">
+          <button id="tab-menor" onclick="switchAlimentosTab('menor')"
+            class="tab-btn active py-2 px-3 rounded-lg text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 text-slate-600">
             <i class="fa-solid fa-child-reaching"></i><span>Menor de edad</span>
           </button>
-          <button id="tab-adulto" onclick="switchAlimentosTab('adulto')" class="tab-btn py-2 px-3 rounded-lg text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 text-slate-600">
+          <button id="tab-adulto" onclick="switchAlimentosTab('adulto')"
+            class="tab-btn py-2 px-3 rounded-lg text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 text-slate-600">
             <i class="fa-solid fa-person-cane"></i><span>Adulto mayor</span>
           </button>
         </div>
@@ -192,7 +305,8 @@
       <div class="px-3 sm:px-5 py-3 sm:py-4 overflow-y-auto flex-1">
         <div id="panel-menor" class="tab-panel active">
           <div class="flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 rounded-lg bg-pjRed/10 text-pjRed flex items-center justify-center shrink-0"><i class="fa-solid fa-child-reaching text-sm"></i></div>
+            <div class="w-8 h-8 rounded-lg bg-pjRed/10 text-pjRed flex items-center justify-center shrink-0"><i
+                class="fa-solid fa-child-reaching text-sm"></i></div>
             <div>
               <p class="text-xs sm:text-sm font-bold text-pjRed">Pensión para tu hijo o hija menor</p>
               <p class="text-[10px] sm:text-[11px] text-slate-500">Vínculo familiar directo</p>
@@ -201,31 +315,37 @@
           <ul class="space-y-2 text-[11px] sm:text-xs text-slate-600">
             <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
               <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
-              <span><strong class="text-slate-800">Partida de nacimiento del menor</strong> actualizada. Es el documento clave para acreditar el vínculo familiar.</span>
+              <span><strong class="text-slate-800">Partida de nacimiento del menor</strong> actualizada. Es el documento
+                clave para acreditar el vínculo familiar.</span>
             </li>
             <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
               <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
-              <span><strong class="text-slate-800">DNI del demandante</strong> (madre, padre o tutor que presenta la demanda).</span>
+              <span><strong class="text-slate-800">DNI del demandante</strong> (madre, padre o tutor que presenta la
+                demanda).</span>
             </li>
             <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
               <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
-              <span><strong class="text-slate-800">Datos del demandado:</strong> nombres completos, domicilio actual e información sobre su centro de trabajo o actividad económica.</span>
+              <span><strong class="text-slate-800">Datos del demandado:</strong> nombres completos, domicilio actual e
+                información sobre su centro de trabajo o actividad económica.</span>
             </li>
             <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
               <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
-              <span><strong class="text-slate-800">Pruebas de gastos del menor:</strong> recibos, facturas, boletas (alimentación, educación, salud, vestido, vivienda).</span>
+              <span><strong class="text-slate-800">Pruebas de gastos del menor:</strong> recibos, facturas, boletas
+                (alimentación, educación, salud, vestido, vivienda).</span>
             </li>
           </ul>
           <div class="mt-3 flex items-start gap-2 bg-amber-50 border border-amber-200/80 rounded-lg p-2.5">
             <i class="fa-solid fa-circle-info text-amber-600 text-[11px] mt-0.5 shrink-0"></i>
             <p class="text-[10px] sm:text-[11px] text-amber-900 leading-relaxed">
-              <strong>Recuerda: no se necesita un abogado para interponer una demanda de alimentos para un menor</strong>.
+              <strong>Recuerda: no se necesita un abogado para interponer una demanda de alimentos para un
+                menor</strong>.
             </p>
           </div>
         </div>
         <div id="panel-adulto" class="tab-panel">
           <div class="flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 rounded-lg bg-pjRed/10 text-pjRed flex items-center justify-center shrink-0"><i class="fa-solid fa-person-cane text-sm"></i></div>
+            <div class="w-8 h-8 rounded-lg bg-pjRed/10 text-pjRed flex items-center justify-center shrink-0"><i
+                class="fa-solid fa-person-cane text-sm"></i></div>
             <div>
               <p class="text-xs sm:text-sm font-bold text-pjRed">Pensión para padre o madre adulto mayor</p>
               <p class="text-[10px] sm:text-[11px] text-slate-500">Vínculo filial</p>
@@ -238,39 +358,51 @@
             </li>
             <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
               <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
-              <span><strong class="text-slate-800">Partida de nacimiento del hijo o hija</strong> para acreditar el vínculo familiar con la persona a la que se le exigirá la pensión.</span>
+              <span><strong class="text-slate-800">Partida de nacimiento del hijo o hija</strong> para acreditar el
+                vínculo familiar con la persona a la que se le exigirá la pensión.</span>
             </li>
             <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
               <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
-              <span><strong class="text-slate-800">Datos del demandado:</strong> nombre completo, domicilio e información sobre su empleo o ingresos.</span>
+              <span><strong class="text-slate-800">Datos del demandado:</strong> nombre completo, domicilio e
+                información sobre su empleo o ingresos.</span>
             </li>
             <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
               <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
-              <span><strong class="text-slate-800">Evidencias de gastos y necesidades:</strong> documentos médicos, de cuidado, alimentación u otros.</span>
+              <span><strong class="text-slate-800">Evidencias de gastos y necesidades:</strong> documentos médicos, de
+                cuidado, alimentación u otros.</span>
             </li>
           </ul>
           <div class="mt-3 flex items-start gap-2 bg-amber-50 border border-amber-200/80 rounded-lg p-2.5">
             <i class="fa-solid fa-circle-info text-amber-600 text-[11px] mt-0.5 shrink-0"></i>
             <p class="text-[10px] sm:text-[11px] text-amber-900 leading-relaxed">
-              <strong>Recuerda: no se necesita un abogado para interponer una demanda de alimentos para un adulto mayor</strong>.
+              <strong>Recuerda: no se necesita un abogado para interponer una demanda de alimentos para un adulto
+                mayor</strong>.
             </p>
           </div>
         </div>
       </div>
       <div class="p-3 sm:p-4 border-t border-slate-200 bg-slate-50 shrink-0 flex flex-col sm:flex-row gap-2">
-        <a href="https://www.pj.gob.pe/wps/wcm/connect/ajpvyjc/s_ajpvcyjc/as_acceso_justicia_inicio/as_formularios" target="_blank" rel="noopener noreferrer" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-pjRed to-red-700 text-white font-bold text-[11px] sm:text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5 text-center">
-          <i class="fa-solid fa-file-pdf"></i><span>Descargar formato gratuito (sin abogado)</span><i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80"></i>
+        <a href="https://www.pj.gob.pe/wps/wcm/connect/ajpvyjc/s_ajpvcyjc/as_acceso_justicia_inicio/as_formularios"
+          target="_blank" rel="noopener noreferrer"
+          class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-pjRed to-red-700 text-white font-bold text-[11px] sm:text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5 text-center">
+          <i class="fa-solid fa-file-pdf"></i><span>Descargar formato gratuito (sin abogado)</span><i
+            class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80"></i>
         </a>
-		<a href="https://casillas.pj.gob.pe/sinoe/pages/casillas/solicitudesRegistro/lista-opciones-solicitud.xhtml" target="_blank" rel="noopener noreferrer" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-pjBlue to-pjDarkBlue text-white font-bold text-[11px] sm:text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5 text-center">
-          <i class="fa-solid fa-envelope-open-text"></i><span>Gestionar casilla electrónica</span><i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80"></i>
+        <a href="https://casillas.pj.gob.pe/sinoe/pages/casillas/solicitudesRegistro/lista-opciones-solicitud.xhtml"
+          target="_blank" rel="noopener noreferrer"
+          class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-pjBlue to-pjDarkBlue text-white font-bold text-[11px] sm:text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5 text-center">
+          <i class="fa-solid fa-envelope-open-text"></i><span>Gestionar casilla electrónica</span><i
+            class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80"></i>
         </a>
       </div>
     </div>
   </div>
 
   <!-- ===== MODAL REGISTRO DE ALERTA ===== -->
-  <div id="alert-modal" class="fixed inset-0 z-[100] bg-slate-900/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
-    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[94vh] flex flex-col">
+  <div id="alert-modal"
+    class="fixed inset-0 z-[100] bg-slate-900/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
+    <div
+      class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[94vh] flex flex-col">
       <div class="relative bg-gradient-to-r from-pjDarkRed via-pjRed to-rose-700 text-white p-4 sm:p-5 shrink-0">
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
           <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
@@ -278,17 +410,20 @@
         </div>
         <div class="flex items-start justify-between gap-3 relative">
           <div class="flex items-start gap-3 min-w-0">
-            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 relative">
+            <div
+              class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 relative">
               <i class="fa-solid fa-triangle-exclamation text-amber-200 text-xl sm:text-2xl"></i>
               <span class="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 rounded-full animate-ping"></span>
               <span class="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 rounded-full"></span>
             </div>
             <div class="min-w-0">
               <h3 class="text-sm sm:text-base md:text-lg font-bold leading-tight">Registrar alerta de emergencia</h3>
-              <p class="text-[10px] sm:text-xs text-amber-200/90 mt-0.5">Tu alerta se enviará a toda la red de orientadoras</p>
+              <p class="text-[10px] sm:text-xs text-amber-200/90 mt-0.5">Tu alerta se enviará a toda la red de
+                orientadoras</p>
             </div>
           </div>
-          <button onclick="closeAlertModal()" aria-label="Cerrar modal" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-amber-300/60">
+          <button onclick="closeAlertModal()" aria-label="Cerrar modal"
+            class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-amber-300/60">
             <i class="fa-solid fa-xmark text-sm"></i>
           </button>
         </div>
@@ -296,42 +431,49 @@
       <form id="alert-form" onsubmit="submitAlert(event)" class="px-4 sm:px-5 py-4 overflow-y-auto flex-1 space-y-3">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1.5">
-            <i class="fa-solid fa-list-check text-pjRed text-[10px] mr-1"></i>Tipo de emergencia <span class="text-pjRed">*</span>
+            <i class="fa-solid fa-list-check text-pjRed text-[10px] mr-1"></i>Tipo de emergencia <span
+              class="text-pjRed">*</span>
           </label>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
             <label class="cursor-pointer">
               <input type="radio" name="alert-type" value="Violencia familiar" class="peer sr-only" required>
-              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+              <div
+                class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
                 <i class="fa-solid fa-hand-fist text-[11px]"></i>Violencia
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="alert-type" value="Riesgo vital" class="peer sr-only">
-              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+              <div
+                class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
                 <i class="fa-solid fa-heart-pulse text-[11px]"></i>Riesgo vital
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="alert-type" value="Desaparición" class="peer sr-only">
-              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+              <div
+                class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
                 <i class="fa-solid fa-user-slash text-[11px]"></i>Desaparición
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="alert-type" value="Alimentos / pensión" class="peer sr-only">
-              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+              <div
+                class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
                 <i class="fa-solid fa-scale-balanced text-[11px]"></i>Alimentos
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="alert-type" value="Amenaza / hostigamiento" class="peer sr-only">
-              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+              <div
+                class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
                 <i class="fa-solid fa-comment-dots text-[11px]"></i>Amenaza
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="alert-type" value="Otro" class="peer sr-only">
-              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+              <div
+                class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
                 <i class="fa-solid fa-ellipsis text-[11px]"></i>Otro
               </div>
             </label>
@@ -339,13 +481,15 @@
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">
-            <i class="fa-solid fa-location-dot text-pjRed text-[10px] mr-1"></i>Ubicación <span class="text-pjRed">*</span>
+            <i class="fa-solid fa-location-dot text-pjRed text-[10px] mr-1"></i>Ubicación <span
+              class="text-pjRed">*</span>
           </label>
           <div class="relative">
             <input type="text" id="alert-location" required
               class="w-full pl-8 pr-3 py-2.5 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-sm transition"
               placeholder="Detectando tu ubicación...">
-            <i class="fa-solid fa-location-crosshairs absolute left-2.5 top-1/2 -translate-y-1/2 text-pjRed text-sm"></i>
+            <i
+              class="fa-solid fa-location-crosshairs absolute left-2.5 top-1/2 -translate-y-1/2 text-pjRed text-sm"></i>
             <button type="button" onclick="useMyLocation(event)" title="Usar mi ubicación actual"
               class="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-pjBlue text-white flex items-center justify-center hover:bg-pjDarkBlue active:scale-90 transition">
               <i class="fa-solid fa-crosshairs text-xs"></i>
@@ -362,7 +506,8 @@
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">
-            <i class="fa-solid fa-align-left text-pjRed text-[10px] mr-1"></i>Describe la emergencia <span class="text-pjRed">*</span>
+            <i class="fa-solid fa-align-left text-pjRed text-[10px] mr-1"></i>Describe la emergencia <span
+              class="text-pjRed">*</span>
           </label>
           <textarea id="alert-description" required rows="3" maxlength="300"
             class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-sm transition resize-none"
@@ -374,8 +519,10 @@
         </div>
       </form>
       <div class="p-3 sm:p-4 border-t border-slate-200 bg-slate-50 shrink-0 flex gap-2">
-        <button type="button" onclick="closeAlertModal()" class="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-100 transition active:scale-95">Cancelar</button>
-        <button type="submit" form="alert-form" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-red-600 to-pjDarkRed text-white font-bold text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5">
+        <button type="button" onclick="closeAlertModal()"
+          class="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-100 transition active:scale-95">Cancelar</button>
+        <button type="submit" form="alert-form"
+          class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-red-600 to-pjDarkRed text-white font-bold text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5">
           <i class="fa-solid fa-paper-plane text-[11px]"></i>
           <span>Enviar alerta</span>
         </button>
@@ -384,8 +531,10 @@
   </div>
 
   <!-- ===== MODAL CAMBIO DE CONTRASEÑA ===== -->
-  <div id="password-modal" class="fixed inset-0 z-[100] bg-slate-900/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
-    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[94vh] flex flex-col">
+  <div id="password-modal"
+    class="fixed inset-0 z-[100] bg-slate-900/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
+    <div
+      class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[94vh] flex flex-col">
       <div class="relative bg-gradient-to-r from-pjDarkBlue via-pjBlue to-pjDarkRed text-white p-4 sm:p-5 shrink-0">
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
           <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
@@ -393,42 +542,52 @@
         </div>
         <div class="flex items-start justify-between gap-3 relative">
           <div class="flex items-start gap-3 min-w-0">
-            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+            <div
+              class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
               <i class="fa-solid fa-key text-pjGold text-xl sm:text-2xl"></i>
             </div>
             <div class="min-w-0">
               <h3 class="text-sm sm:text-base md:text-lg font-bold leading-tight">Cambiar contraseña</h3>
-              <p class="text-[10px] sm:text-xs text-amber-200/90 mt-0.5">Actualiza tu clave de acceso de forma segura</p>
+              <p class="text-[10px] sm:text-xs text-amber-200/90 mt-0.5">Actualiza tu clave de acceso de forma segura
+              </p>
             </div>
           </div>
-          <button onclick="closePasswordModal()" aria-label="Cerrar modal" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+          <button onclick="closePasswordModal()" aria-label="Cerrar modal"
+            class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
             <i class="fa-solid fa-xmark text-sm"></i>
           </button>
         </div>
       </div>
-      <form id="password-form" onsubmit="submitPasswordChange(event)" class="px-4 sm:px-5 py-4 overflow-y-auto flex-1 space-y-3">
+      <form id="password-form" onsubmit="submitPasswordChange(event)"
+        class="px-4 sm:px-5 py-4 overflow-y-auto flex-1 space-y-3">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">
-            <i class="fa-solid fa-lock text-pjRed text-[10px] mr-1"></i>Contraseña actual <span class="text-pjRed">*</span>
+            <i class="fa-solid fa-lock text-pjRed text-[10px] mr-1"></i>Contraseña actual <span
+              class="text-pjRed">*</span>
           </label>
           <div class="relative">
             <input type="password" id="pwd-current" required autocomplete="current-password"
               class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-sm transition"
               placeholder="Ingresa tu contraseña actual">
-            <button type="button" onclick="togglePwd('pwd-current', this)" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg text-slate-400 hover:text-pjBlue hover:bg-slate-100 flex items-center justify-center transition" tabindex="-1">
+            <button type="button" onclick="togglePwd('pwd-current', this)"
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg text-slate-400 hover:text-pjBlue hover:bg-slate-100 flex items-center justify-center transition"
+              tabindex="-1">
               <i class="fa-solid fa-eye text-xs"></i>
             </button>
           </div>
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">
-            <i class="fa-solid fa-key text-pjRed text-[10px] mr-1"></i>Nueva contraseña <span class="text-pjRed">*</span>
+            <i class="fa-solid fa-key text-pjRed text-[10px] mr-1"></i>Nueva contraseña <span
+              class="text-pjRed">*</span>
           </label>
           <div class="relative">
             <input type="password" id="pwd-new" required minlength="8" autocomplete="new-password"
               class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-sm transition"
               placeholder="Mínimo 8 caracteres">
-            <button type="button" onclick="togglePwd('pwd-new', this)" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg text-slate-400 hover:text-pjBlue hover:bg-slate-100 flex items-center justify-center transition" tabindex="-1">
+            <button type="button" onclick="togglePwd('pwd-new', this)"
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg text-slate-400 hover:text-pjBlue hover:bg-slate-100 flex items-center justify-center transition"
+              tabindex="-1">
               <i class="fa-solid fa-eye text-xs"></i>
             </button>
           </div>
@@ -439,21 +598,28 @@
             <span id="pwd-strength-text" class="text-[10px] font-semibold text-slate-400 w-16 text-right">—</span>
           </div>
           <ul class="mt-1.5 space-y-0.5 text-[10px] text-slate-500">
-            <li id="req-length" class="flex items-center gap-1"><i class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Al menos 8 caracteres</li>
-            <li id="req-upper" class="flex items-center gap-1"><i class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Una letra mayúscula</li>
-            <li id="req-number" class="flex items-center gap-1"><i class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Un número</li>
-            <li id="req-symbol" class="flex items-center gap-1"><i class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Un símbolo (!@#$...)</li>
+            <li id="req-length" class="flex items-center gap-1"><i
+                class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Al menos 8 caracteres</li>
+            <li id="req-upper" class="flex items-center gap-1"><i
+                class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Una letra mayúscula</li>
+            <li id="req-number" class="flex items-center gap-1"><i
+                class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Un número</li>
+            <li id="req-symbol" class="flex items-center gap-1"><i
+                class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Un símbolo (!@#$...)</li>
           </ul>
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">
-            <i class="fa-solid fa-check-double text-pjRed text-[10px] mr-1"></i>Confirmar nueva contraseña <span class="text-pjRed">*</span>
+            <i class="fa-solid fa-check-double text-pjRed text-[10px] mr-1"></i>Confirmar nueva contraseña <span
+              class="text-pjRed">*</span>
           </label>
           <div class="relative">
             <input type="password" id="pwd-confirm" required autocomplete="new-password"
               class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-sm transition"
               placeholder="Repite la nueva contraseña">
-            <button type="button" onclick="togglePwd('pwd-confirm', this)" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg text-slate-400 hover:text-pjBlue hover:bg-slate-100 flex items-center justify-center transition" tabindex="-1">
+            <button type="button" onclick="togglePwd('pwd-confirm', this)"
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg text-slate-400 hover:text-pjBlue hover:bg-slate-100 flex items-center justify-center transition"
+              tabindex="-1">
               <i class="fa-solid fa-eye text-xs"></i>
             </button>
           </div>
@@ -462,13 +628,16 @@
         <div class="p-2.5 bg-amber-50 border border-amber-200/80 rounded-xl flex gap-2">
           <i class="fa-solid fa-circle-info text-amber-600 text-[11px] mt-0.5 shrink-0"></i>
           <p class="text-[10px] text-amber-900 leading-relaxed">
-            Por seguridad, no compartas tu contraseña. Si olvidaste tu clave actual, contacta al administrador del sistema.
+            Por seguridad, no compartas tu contraseña. Si olvidaste tu clave actual, contacta al administrador del
+            sistema.
           </p>
         </div>
       </form>
       <div class="p-3 sm:p-4 border-t border-slate-200 bg-slate-50 shrink-0 flex gap-2">
-        <button type="button" onclick="closePasswordModal()" class="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-100 transition active:scale-95">Cancelar</button>
-        <button type="submit" form="password-form" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-pjRed to-pjDarkRed text-white font-bold text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5">
+        <button type="button" onclick="closePasswordModal()"
+          class="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-100 transition active:scale-95">Cancelar</button>
+        <button type="submit" form="password-form"
+          class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-pjRed to-pjDarkRed text-white font-bold text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5">
           <i class="fa-solid fa-floppy-disk text-[11px]"></i>
           <span>Guardar cambios</span>
         </button>
@@ -479,136 +648,169 @@
   <!-- ===== CONTENEDOR PRINCIPAL ===== -->
   <div class="w-full min-h-screen flex flex-col bg-white shadow-2xl relative">
 
-	<!-- HEADER -->
-	<header class="bg-gradient-to-r from-pjDarkRed via-pjRed to-pjBlue text-white pt-4 pb-5 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 shadow-lg relative z-40">
-	  <div class="absolute inset-0 overflow-hidden pointer-events-none">
-		<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
-		<div class="absolute -left-10 -top-10 w-36 h-36 bg-amber-400/10 rounded-full blur-xl"></div>
-	  </div>
-	  <div class="flex items-center justify-between pb-3 border-b border-white/15 mb-3 text-[11px] md:text-xs text-white/80 font-medium tracking-wide relative">
-		<div class="flex items-center gap-1.5">
-		  <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-		  <span>PODER JUDICIAL DEL PERÚ</span>
-		</div>
-		<span class="bg-white/10 px-2 py-0.5 rounded-full text-[10px] md:text-[11px] tracking-wider text-amber-200 font-semibold border border-white/10">PROVINCIA HUAURA</span>
-	  </div>
-	  <div class="flex items-center justify-between gap-3 md:gap-6 relative">
-		<div class="flex items-center gap-3 md:gap-4 flex-1">
-		  <div class="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center p-2 md:p-2.5 shadow-inner shrink-0 group">
-			<i class="fa-solid fa-scale-balanced text-pjGold text-2xl md:text-3xl lg:text-4xl transition-transform duration-300 group-hover:scale-110"></i>
-		  </div>
-		  <div class="min-w-0">
-			<h1 class="text-[13px] sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-bold tracking-tight text-white leading-tight font-cinzel">CORTE SUPERIOR DE JUSTICIA DE HUAURA</h1>
-			<p class="text-[10px] sm:text-[11px] md:text-xs lg:text-sm text-pjGoldLight/90 font-medium tracking-wide flex items-center gap-1 mt-0.5">
-			  <i class="fa-solid fa-circle-check text-pjGold text-xs md:text-sm shrink-0"></i>
-			  <span>Orientadoras Judiciales en Línea</span>
-			</p>
-		  </div>
-		</div>
-		<div class="relative shrink-0" id="user-menu-container" style="z-index: 60;">
-		  <button id="user-menu-btn" onclick="toggleUserMenu(event)" aria-haspopup="true" aria-expanded="false" class="flex items-center gap-2 md:gap-3 pl-2 md:pl-4 border-l border-white/20 cursor-pointer select-none rounded-xl hover:bg-white/5 active:bg-white/10 transition-colors px-2 py-1 -my-1 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-			<div class="text-right hidden sm:block">
-			  <span class="block text-[11px] md:text-sm font-bold text-white leading-tight">Orientadora</span>
-			  <span class="block text-[9px] md:text-xs font-medium text-amber-200">Judicial Activa</span>
-			</div>
-			<div class="relative">
-			  <div class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 p-0.5 shadow-md">
-				<div class="w-full h-full rounded-full bg-pjBlue overflow-hidden flex items-center justify-center text-white border border-white/20">
-				  <i class="fa-solid fa-user text-amber-100 text-lg md:text-xl lg:text-2xl"></i>
-				</div>
-			  </div>
-			  <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
-			</div>
-			<i id="user-menu-chevron" class="fa-solid fa-chevron-down text-amber-200 text-sm transition-transform duration-200 hidden sm:block"></i>
-		  </button>
-		  <div id="user-dropdown" class="hidden dropdown-anim absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden" style="z-index: 70;">
-			<div class="px-4 py-3 bg-gradient-to-br from-pjBlue to-pjDarkBlue text-white">
-			  <div class="flex items-center gap-2.5">
-				<div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 p-0.5 shrink-0">
-				  <div class="w-full h-full rounded-full bg-pjBlue flex items-center justify-center"><i class="fa-solid fa-user text-amber-100"></i></div>
-				</div>
-				<div class="min-w-0">
-				  <p class="text-sm font-bold truncate">Orientadora Judicial</p>
-				  <p class="text-[11px] text-amber-200 truncate">orientadora@pj.gob.pe</p>
-				</div>
-			  </div>
-			</div>
-			<div class="py-1.5">
-			  <button onclick="openPasswordModal()" class="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-pjBlue hover:bg-blue-50 active:bg-blue-100 transition-colors">
-				<div class="w-8 h-8 rounded-lg bg-pjBlue/10 text-pjBlue flex items-center justify-center shrink-0"><i class="fa-solid fa-key text-sm"></i></div>
-				<div class="flex-1">
-				  <p class="font-semibold leading-tight">Cambiar contraseña</p>
-				  <p class="text-[11px] text-slate-500">Actualiza tu clave de acceso</p>
-				</div>
-			  </button>
-			  <button onclick="logoutUser()" class="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-pjRed hover:bg-red-50 active:bg-red-100 transition-colors">
-				<div class="w-8 h-8 rounded-lg bg-pjRed/10 text-pjRed flex items-center justify-center shrink-0"><i class="fa-solid fa-right-from-bracket text-sm"></i></div>
-				<div class="flex-1">
-				  <p class="font-semibold leading-tight">Cerrar sesión</p>
-				  <p class="text-[11px] text-slate-500">Salir del sistema de forma segura</p>
-				</div>
-			  </button>
-			</div>
-		  </div>
-		</div>
-	  </div>
-	</header>
+    <!-- HEADER -->
+    <header
+      class="bg-gradient-to-r from-pjDarkRed via-pjRed to-pjBlue text-white pt-4 pb-5 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 shadow-lg relative z-40">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
+        <div class="absolute -left-10 -top-10 w-36 h-36 bg-amber-400/10 rounded-full blur-xl"></div>
+      </div>
+      <div
+        class="flex items-center justify-between pb-3 border-b border-white/15 mb-3 text-[11px] md:text-xs text-white/80 font-medium tracking-wide relative">
+        <div class="flex items-center gap-1.5">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>PODER JUDICIAL DEL PERÚ</span>
+        </div>
+        <span
+          class="bg-white/10 px-2 py-0.5 rounded-full text-[10px] md:text-[11px] tracking-wider text-amber-200 font-semibold border border-white/10">PROVINCIA
+          HUAURA</span>
+      </div>
+      <div class="flex items-center justify-between gap-3 md:gap-6 relative">
+        <div class="flex items-center gap-3 md:gap-4 flex-1">
+          <div
+            class="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center p-2 md:p-2.5 shadow-inner shrink-0 group">
+            <i
+              class="fa-solid fa-scale-balanced text-pjGold text-2xl md:text-3xl lg:text-4xl transition-transform duration-300 group-hover:scale-110"></i>
+          </div>
+          <div class="min-w-0">
+            <h1
+              class="text-[13px] sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-bold tracking-tight text-white leading-tight font-cinzel">
+              CORTE SUPERIOR DE JUSTICIA DE HUAURA</h1>
+            <p
+              class="text-[10px] sm:text-[11px] md:text-xs lg:text-sm text-pjGoldLight/90 font-medium tracking-wide flex items-center gap-1 mt-0.5">
+              <i class="fa-solid fa-circle-check text-pjGold text-xs md:text-sm shrink-0"></i>
+              <span>Orientadoras Judiciales en Línea</span>
+            </p>
+          </div>
+        </div>
+        <div class="relative shrink-0" id="user-menu-container" style="z-index: 60;">
+          <button id="user-menu-btn" onclick="toggleUserMenu(event)" aria-haspopup="true" aria-expanded="false"
+            class="flex items-center gap-2 md:gap-3 pl-2 md:pl-4 border-l border-white/20 cursor-pointer select-none rounded-xl hover:bg-white/5 active:bg-white/10 transition-colors px-2 py-1 -my-1 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+            <div class="text-right hidden sm:block">
+              <span class="block text-[11px] md:text-sm font-bold text-white leading-tight">Orientadora</span>
+              <span class="block text-[9px] md:text-xs font-medium text-amber-200">Judicial Activa</span>
+            </div>
+            <div class="relative">
+              <div
+                class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 p-0.5 shadow-md">
+                <div
+                  class="w-full h-full rounded-full bg-pjBlue overflow-hidden flex items-center justify-center text-white border border-white/20">
+                  <i class="fa-solid fa-user text-amber-100 text-lg md:text-xl lg:text-2xl"></i>
+                </div>
+              </div>
+              <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
+            </div>
+            <i id="user-menu-chevron"
+              class="fa-solid fa-chevron-down text-amber-200 text-sm transition-transform duration-200 hidden sm:block"></i>
+          </button>
+          <div id="user-dropdown"
+            class="hidden dropdown-anim absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden"
+            style="z-index: 70;">
+            <div class="px-4 py-3 bg-gradient-to-br from-pjBlue to-pjDarkBlue text-white">
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 p-0.5 shrink-0">
+                  <div class="w-full h-full rounded-full bg-pjBlue flex items-center justify-center"><i
+                      class="fa-solid fa-user text-amber-100"></i></div>
+                </div>
+                <div class="min-w-0">
+                  <p class="text-sm font-bold truncate">Orientadora Judicial</p>
+                  <p class="text-[11px] text-amber-200 truncate">orientadora@pj.gob.pe</p>
+                </div>
+              </div>
+            </div>
+            <div class="py-1.5">
+              <button onclick="openPasswordModal()"
+                class="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-pjBlue hover:bg-blue-50 active:bg-blue-100 transition-colors">
+                <div class="w-8 h-8 rounded-lg bg-pjBlue/10 text-pjBlue flex items-center justify-center shrink-0"><i
+                    class="fa-solid fa-key text-sm"></i></div>
+                <div class="flex-1">
+                  <p class="font-semibold leading-tight">Cambiar contraseña</p>
+                  <p class="text-[11px] text-slate-500">Actualiza tu clave de acceso</p>
+                </div>
+              </button>
+              <button onclick="logoutUser()"
+                class="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-pjRed hover:bg-red-50 active:bg-red-100 transition-colors">
+                <div class="w-8 h-8 rounded-lg bg-pjRed/10 text-pjRed flex items-center justify-center shrink-0"><i
+                    class="fa-solid fa-right-from-bracket text-sm"></i></div>
+                <div class="flex-1">
+                  <p class="font-semibold leading-tight">Cerrar sesión</p>
+                  <p class="text-[11px] text-slate-500">Salir del sistema de forma segura</p>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
     <!-- MAIN -->
     <main class="flex-1 w-full px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 py-6 lg:py-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
 
         <section class="lg:col-span-4 xl:col-span-5 flex flex-col items-center lg:items-stretch">
-          <div class="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200/70 text-amber-900 text-xs md:text-sm px-3.5 py-1.5 rounded-full font-semibold mb-5 shadow-sm self-center lg:self-start">
+          <div
+            class="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200/70 text-amber-900 text-xs md:text-sm px-3.5 py-1.5 rounded-full font-semibold mb-5 shadow-sm self-center lg:self-start">
             <i class="fa-regular fa-clock text-amber-600 animate-spin" style="animation-duration: 9s;"></i>
             <span>Atención Inmediata 24/7 en Caso de Vulnerabilidad</span>
           </div>
 
           <div class="flex flex-col items-center justify-center relative w-full">
             <div class="relative flex items-center justify-center">
-              <span id="panic-ring-outer" class="absolute w-44 h-44 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-60 lg:h-60 xl:w-72 xl:h-72 rounded-full bg-red-400/20 hidden pointer-events-none"></span>
-              <span id="panic-ring-inner" class="absolute w-40 h-40 sm:w-44 sm:h-44 md:w-52 md:h-52 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full bg-red-500/10 hidden pointer-events-none"></span>
+              <span id="panic-ring-outer"
+                class="absolute w-44 h-44 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-60 lg:h-60 xl:w-72 xl:h-72 rounded-full bg-red-400/20 hidden pointer-events-none"></span>
+              <span id="panic-ring-inner"
+                class="absolute w-40 h-40 sm:w-44 sm:h-44 md:w-52 md:h-52 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full bg-red-500/10 hidden pointer-events-none"></span>
 
-              <button 
-                id="panic-btn"
-                onclick="openAlertModal()"
+              <button id="panic-btn" onclick="openAlertModal()"
                 aria-label="Botón de Pánico para Emergencias Judiciales y Riesgo Vital"
                 class="relative z-10 w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 xl:w-60 xl:h-60 rounded-full bg-gradient-to-b from-red-600 via-rose-700 to-pjDarkRed text-white p-2 shadow-2xl shadow-red-900/40 ring-8 ring-red-100 hover:ring-red-200 active:ring-red-300 transition-all duration-300 transform hover:scale-105 active:scale-95 flex flex-col items-center justify-center group focus:outline-none focus:ring-8 focus:ring-red-300/80 cursor-pointer select-none">
-                
-                <span class="absolute top-2 w-24 md:w-32 xl:w-40 h-12 md:h-16 xl:h-20 bg-white/20 rounded-t-full blur-[2px] pointer-events-none"></span>
-                
+
+                <span
+                  class="absolute top-2 w-24 md:w-32 xl:w-40 h-12 md:h-16 xl:h-20 bg-white/20 rounded-t-full blur-[2px] pointer-events-none"></span>
+
                 <div class="flex flex-col items-center justify-center gap-0.5 md:gap-1 relative z-10">
-                  <div class="w-11 h-11 md:w-14 md:h-14 xl:w-16 xl:h-16 flex items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors shadow-inner mb-0.5">
-                    <i id="panic-icon" class="fa-solid fa-triangle-exclamation text-amber-200 text-xl md:text-2xl xl:text-3xl drop-shadow"></i>
+                  <div
+                    class="w-11 h-11 md:w-14 md:h-14 xl:w-16 xl:h-16 flex items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors shadow-inner mb-0.5">
+                    <i id="panic-icon"
+                      class="fa-solid fa-triangle-exclamation text-amber-200 text-xl md:text-2xl xl:text-3xl drop-shadow"></i>
                   </div>
-                  <span class="text-[11px] sm:text-xs md:text-sm xl:text-base font-extrabold tracking-[0.15em] font-cinzel leading-none drop-shadow-md">NOTIFICAR</span>
-                  <span class="text-sm sm:text-base md:text-lg xl:text-xl font-black tracking-wider text-amber-300 leading-none drop-shadow-md">ORIENTADORAS</span>
-                  <span id="panic-badge" class="text-[8px] md:text-[9px] uppercase tracking-widest text-white/85 font-bold mt-1 bg-black/30 px-1.5 py-0.5 rounded-full border border-white/10 leading-none">
+                  <span
+                    class="text-[11px] sm:text-xs md:text-sm xl:text-base font-extrabold tracking-[0.15em] font-cinzel leading-none drop-shadow-md">NOTIFICAR</span>
+                  <span
+                    class="text-sm sm:text-base md:text-lg xl:text-xl font-black tracking-wider text-amber-300 leading-none drop-shadow-md">ORIENTADORAS</span>
+                  <span id="panic-badge"
+                    class="text-[8px] md:text-[9px] uppercase tracking-widest text-white/85 font-bold mt-1 bg-black/30 px-1.5 py-0.5 rounded-full border border-white/10 leading-none">
                     Presione Aquí
                   </span>
                 </div>
               </button>
             </div>
-			
-			<p class="text-[11px] md:text-sm lg:text-base text-slate-500 mt-4 lg:mt-6 font-medium text-center max-w-xs md:max-w-sm lg:max-w-md">
-			  Presiona el botón para <strong class="text-pjRed">difundir la emergencia</strong>. Se notificará a las orientadoras para que tomen conocimiento y coordinen el apoyo necesario.
-			</p>
+
+            <p
+              class="text-[11px] md:text-sm lg:text-base text-slate-500 mt-4 lg:mt-6 font-medium text-center max-w-xs md:max-w-sm lg:max-w-md">
+              Presiona el botón para <strong class="text-pjRed">difundir la emergencia</strong>. Se notificará a las
+              orientadoras para que tomen conocimiento y coordinen el apoyo necesario.
+            </p>
 
             <!-- ===== PANEL DE ALERTAS EN VIVO ===== -->
             <div class="w-full mt-5 lg:mt-6 max-w-md lg:max-w-none">
               <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden">
-                <div class="flex items-center justify-between px-3.5 py-2.5 bg-gradient-to-r from-pjBlue to-pjDarkBlue text-white">
+                <div
+                  class="flex items-center justify-between px-3.5 py-2.5 bg-gradient-to-r from-pjBlue to-pjDarkBlue text-white">
                   <div class="flex items-center gap-2">
                     <span class="relative flex items-center justify-center w-5 h-5">
                       <span id="live-dot" class="absolute w-2.5 h-2.5 rounded-full bg-red-500 live-dot hidden"></span>
-                      <span id="live-ping" class="absolute w-2.5 h-2.5 rounded-full bg-red-400 animate-ping hidden"></span>
+                      <span id="live-ping"
+                        class="absolute w-2.5 h-2.5 rounded-full bg-red-400 animate-ping hidden"></span>
                       <span id="live-idle" class="absolute w-2.5 h-2.5 rounded-full bg-slate-400"></span>
                     </span>
                     <h3 class="text-xs md:text-sm font-bold tracking-wide">Aviso en vivo</h3>
                   </div>
                   <div class="flex items-center gap-1.5">
-                    <span id="alerts-count" class="text-[10px] md:text-xs font-bold bg-white/15 px-2 py-0.5 rounded-full">0 activas</span>
-                    <button onclick="clearResolvedAlerts()" title="Limpiar atendidas/finalizadas" class="w-6 h-6 rounded-md bg-white/10 hover:bg-white/20 active:scale-90 transition flex items-center justify-center">
+                    <span id="alerts-count"
+                      class="text-[10px] md:text-xs font-bold bg-white/15 px-2 py-0.5 rounded-full">0 activas</span>
+                    <button onclick="clearResolvedAlerts()" title="Limpiar atendidas/finalizadas"
+                      class="w-6 h-6 rounded-md bg-white/10 hover:bg-white/20 active:scale-90 transition flex items-center justify-center">
                       <i class="fa-solid fa-broom text-[10px]"></i>
                     </button>
                   </div>
@@ -620,7 +822,8 @@
                       <i class="fa-solid fa-bell-slash text-slate-400 text-lg"></i>
                     </div>
                     <p class="text-xs font-semibold text-slate-500">Sin alertas activas</p>
-                    <p class="text-[10px] text-slate-400 mt-0.5">Las alertas que registres aparecerán aquí en tiempo real.</p>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Las alertas que registres aparecerán aquí en tiempo
+                      real.</p>
                   </div>
                 </div>
               </div>
@@ -633,124 +836,205 @@
           <div class="flex items-center justify-between mb-3 md:mb-4 px-1">
             <div class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-pjRed"></span>
-              <h2 class="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-pjBlue uppercase tracking-wider">Servicios de Emergencia y Soporte</h2>
+              <h2 class="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-pjBlue uppercase tracking-wider">
+                Servicios de Emergencia y Soporte</h2>
             </div>
             <span class="text-[10px] md:text-xs font-semibold text-slate-400">12 Canales Oficiales</span>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 md:gap-3 lg:gap-4">
-            
-            <button onclick="openServiceModal('pnp')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-shield text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">PNP</span>
+
+            <button onclick="openServiceModal('pnp')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-solid fa-shield text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">PNP</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Central 105</span>
             </button>
 
-            <button onclick="openServiceModal('serenazgo')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-person-military-pointing text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">SERENAZGO</span>
+            <button onclick="openServiceModal('serenazgo')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-solid fa-person-military-pointing text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">SERENAZGO</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Seguridad Ciudadana</span>
             </button>
 
-            <button onclick="openServiceModal('ministerio-publico')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-shield-halved text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">MINISTERIO PÚBLICO</span>
+            <button onclick="openServiceModal('ministerio-publico')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-solid fa-shield-halved text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">MINISTERIO
+                PÚBLICO</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Turno Fiscal</span>
             </button>
 
-            <button onclick="openServiceModal('corte-huaura')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-building-columns text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">CORTE DE HUAURA</span>
+            <button onclick="openServiceModal('corte-huaura')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-solid fa-building-columns text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">CORTE
+                DE HUAURA</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Sede Central</span>
             </button>
 
-            <button onclick="openServiceModal('bomberos')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-fire-extinguisher text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">BOMBEROS</span>
+            <button onclick="openServiceModal('bomberos')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-solid fa-fire-extinguisher text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">BOMBEROS</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Línea 116</span>
             </button>
 
-            <button onclick="openServiceModal('cem')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-umbrella text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">CEM - MUJER</span>
+            <button onclick="openServiceModal('cem')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-solid fa-umbrella text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">CEM
+                - MUJER</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Línea 100</span>
             </button>
 
-            <button onclick="openServiceModal('defensa-publica')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-scale-balanced text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">DEFENSA PÚBLICA</span>
+            <button onclick="openServiceModal('defensa-publica')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-solid fa-scale-balanced text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">DEFENSA
+                PÚBLICA</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Abogado Gratuito</span>
             </button>
 
-            <button onclick="openServiceModal('hospitales')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-hospital text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">HOSPITALES</span>
+            <button onclick="openServiceModal('hospitales')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-solid fa-hospital text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">HOSPITALES</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">SAMU 106</span>
             </button>
 
-            <button onclick="openServiceModal('indeci')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-cloud-bolt text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">INDECI</span>
+            <button onclick="openServiceModal('indeci')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-solid fa-cloud-bolt text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">INDECI</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Defensa Civil 115</span>
             </button>
 
-            <button onclick="openServiceModal('prefectura')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-flag text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">PREFECTURA</span>
+            <button onclick="openServiceModal('prefectura')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-solid fa-flag text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">PREFECTURA</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Garantías</span>
             </button>
 
             <!-- ===== NUEVO: DEMUNA ===== -->
-            <button onclick="openServiceModal('demuna')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-children text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">DEMUNA</span>
+            <button onclick="openServiceModal('demuna')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-solid fa-children text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">DEMUNA</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Niñez y Adolescencia</span>
             </button>
 
             <!-- ===== NUEVO: ODANC HUAURA (con WhatsApp) ===== -->
-            <button onclick="openServiceModal('odanc')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
-              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-brands fa-whatsapp text-white text-xl md:text-2xl lg:text-3xl"></i></div>
-              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">ODANC HUAURA</span>
+            <button onclick="openServiceModal('odanc')"
+              class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div
+                class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110">
+                <i class="fa-brands fa-whatsapp text-white text-xl md:text-2xl lg:text-3xl"></i>
+              </div>
+              <span
+                class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">ODANC
+                HUAURA</span>
               <span class="text-[9px] md:text-[10px] text-white/50 mt-1">WhatsApp Directo</span>
             </button>
 
           </div>
 
-          <div class="mt-4 md:mt-6 bg-gradient-to-r from-slate-50 to-amber-50/50 rounded-2xl p-3 md:p-4 border border-amber-200/60 flex items-center justify-between gap-3 shadow-sm">
+          <div
+            class="mt-4 md:mt-6 bg-gradient-to-r from-slate-50 to-amber-50/50 rounded-2xl p-3 md:p-4 border border-amber-200/60 flex items-center justify-between gap-3 shadow-sm">
             <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
-              <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-pjRed text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-scale-balanced text-sm md:text-base"></i></div>
+              <div
+                class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-pjRed text-white flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-scale-balanced text-sm md:text-base"></i>
+              </div>
               <div class="min-w-0">
                 <p class="text-xs md:text-sm font-bold text-pjBlue truncate">¿Dudas con una demanda de alimentos?</p>
-                <p class="text-[10px] md:text-xs text-slate-500 truncate">Revisa documentos y formato oficial según tu caso</p>
+                <p class="text-[10px] md:text-xs text-slate-500 truncate">Revisa documentos y formato oficial según tu
+                  caso</p>
               </div>
             </div>
-            <button onclick="openAlimentosModal()" class="text-[11px] md:text-sm font-bold text-pjRed hover:text-pjDarkRed bg-white px-2.5 md:px-4 py-1 md:py-2 rounded-lg border border-amber-300 shadow-sm shrink-0 active:scale-95 transition flex items-center gap-1.5">
+            <button onclick="openAlimentosModal()"
+              class="text-[11px] md:text-sm font-bold text-pjRed hover:text-pjDarkRed bg-white px-2.5 md:px-4 py-1 md:py-2 rounded-lg border border-amber-300 shadow-sm shrink-0 active:scale-95 transition flex items-center gap-1.5">
               <span>Consultar</span><i class="fa-solid fa-arrow-right text-[10px] md:text-xs"></i>
             </button>
           </div>
 
-          <div class="mt-3 md:mt-4 bg-gradient-to-r from-pjBlue to-pjDarkBlue rounded-2xl p-3 md:p-4 shadow-card-soft border border-white/10 relative overflow-hidden">
-            <div class="absolute -right-6 -top-6 w-24 h-24 bg-pjGold/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div
+            class="mt-3 md:mt-4 bg-gradient-to-r from-pjBlue to-pjDarkBlue rounded-2xl p-3 md:p-4 shadow-card-soft border border-white/10 relative overflow-hidden">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-pjGold/10 rounded-full blur-2xl pointer-events-none">
+            </div>
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 relative">
               <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
-                <div class="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-white/10 backdrop-blur-md border border-white/15 text-pjGold flex items-center justify-center shrink-0"><i class="fa-solid fa-folder-plus text-sm md:text-base"></i></div>
+                <div
+                  class="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-white/10 backdrop-blur-md border border-white/15 text-pjGold flex items-center justify-center shrink-0">
+                  <i class="fa-solid fa-folder-plus text-sm md:text-base"></i>
+                </div>
                 <div class="min-w-0">
                   <p class="text-xs md:text-sm font-bold text-white leading-tight">Gestión de Ficha de Atención</p>
-                  <p class="text-[10px] md:text-xs text-slate-300 mt-0.5">Registra y consulta en línea las orientaciones brindadas</p>
+                  <p class="text-[10px] md:text-xs text-slate-300 mt-0.5">Registra y consulta en línea las orientaciones
+                    brindadas</p>
                 </div>
               </div>
-              <a href="ficha" class="shrink-0 py-2 px-3 md:px-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-600 text-pjDarkBlue font-bold text-[11px] md:text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5">
+              <a href="ficha"
+                class="shrink-0 py-2 px-3 md:px-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-600 text-pjDarkBlue font-bold text-[11px] md:text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5">
                 <span>Acceder</span><i class="fa-solid fa-arrow-right text-[10px]"></i>
               </a>
             </div>
             <div class="mt-3 pt-3 border-t border-white/10 grid grid-cols-2 gap-2 text-center relative">
               <div>
                 <p class="text-sm md:text-lg font-extrabold text-pjGold leading-none">1,240</p>
-                <p class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-300 mt-1 font-semibold">Fichas registradas</p>
+                <p class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-300 mt-1 font-semibold">Fichas
+                  registradas</p>
               </div>
               <div class="border-l border-white/10">
                 <p class="text-sm md:text-lg font-extrabold text-amber-200 leading-none">320</p>
-                <p class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-300 mt-1 font-semibold">Este mes</p>
+                <p class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-300 mt-1 font-semibold">Este mes
+                </p>
               </div>
             </div>
           </div>
@@ -759,12 +1043,15 @@
       </div>
     </main>
 
-    <footer class="bg-pjBlue border-t-2 border-pjGold/60 text-white px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 py-4 md:py-6 text-center shadow-lg relative w-full">
+    <footer
+      class="bg-pjBlue border-t-2 border-pjGold/60 text-white px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 py-4 md:py-6 text-center shadow-lg relative w-full">
       <div class="flex items-center justify-center gap-1.5 text-pjGold mb-1 md:mb-2">
         <i class="fa-solid fa-heart text-xs md:text-sm"></i>
-        <span class="text-[10px] md:text-xs uppercase font-bold tracking-widest text-amber-200">Justicia Itinerante</span>
+        <span class="text-[10px] md:text-xs uppercase font-bold tracking-widest text-amber-200">Justicia
+          Itinerante</span>
       </div>
-      <p class="text-[11px] sm:text-xs md:text-sm lg:text-base text-slate-200 italic font-medium leading-relaxed max-w-sm md:max-w-2xl lg:max-w-4xl mx-auto">
+      <p
+        class="text-[11px] sm:text-xs md:text-sm lg:text-base text-slate-200 italic font-medium leading-relaxed max-w-sm md:max-w-2xl lg:max-w-4xl mx-auto">
         &ldquo;Justicia itinerante y solidaria: orientando con el corazón en cada rincón de Huaura.&rdquo;
       </p>
       <div class="mt-2 md:mt-3 text-[9px] md:text-xs text-slate-400 font-normal max-w-3xl mx-auto">
@@ -784,9 +1071,9 @@
         subtitle: 'COMISARÍAS - HUAURA',
         desc: 'Denuncias, emergencias policiales, violencia familiar y patrullaje en Huacho/Huaura.',
         sedes: [
-          { nombre: 'Comisaría de Huacho', direccion: 'Av. 28 de Julio 450, Huacho', telefono: '01 232-1520', lat: -11.1067, lng: -77.6045 },
-          { nombre: 'Comisaría de Santa María', direccion: 'Av. Centenario 200, Santa María', telefono: '01 232-1521', lat: -11.0950, lng: -77.5950 },
-          { nombre: 'Comisaría de Salaverry', direccion: 'Calle Los Pinos 120, Salaverry', telefono: '01 232-1522', lat: -11.1200, lng: -77.6150 }
+          { nombre: 'Comisaría de Huacho - Salaverry', direccion: 'Jr. Salaverry 279 (a 1 cuadra de la Plazuela Mandamiento), Huacho.', telefono: '(01) 232-1131 / (01) 232-1192 / 989-373-556', lat: -11.1096, lng: -77.6078 },
+          { nombre: 'Av. Panamericana Norte 585-705 (sector Cruz Blanca)', direccion: 'Av. Panamericana Norte 585-705 / Km 151 (zona Cruz Blanca), límite distrital Hualmay - Santa María.', telefono: '(01) 232-1001', lat: -11.0964, lng: -77.5948 },
+          { nombre: 'Departamento de Emergencia PNP Huacho (Radio Patrulla / 105 - Santa María)', direccion: 'Av. Panamericana Norte (sector Santa María).', telefono: '(01) 232-5343 / Central 105', lat: -11.1079, lng: -77.5883 }
         ]
       },
       'serenazgo': {
@@ -810,11 +1097,11 @@
       'corte-huaura': {
         title: 'CORTE DE HUAURA',
         subtitle: 'PODER JUDICIAL',
-	    desc: 'Mesa de partes, juzgados de guardia, violencia y familia en Huacho/Huaura.',
-	    sedes: [
-          { nombre: 'Módulo Corporativo de Familia', direccion: 'Esquina de la Calle Simón Bolivar N° 601 y Calle José Gálvez N° 305 - Huacho', telefono: '(01) 414-5000 Anexo: 29518', lat: -11.1067, lng: -77.6045 },
-		  { nombre: 'Módulo Penal', direccion: 'Calle Ausejo Salas N° 387 - Huacho', telefono: '(01) 414-5000 Anexo: 29600', lat: -11.1067, lng: -77.6045 },
-		  { nombre: 'Sede de Flagrancia', direccion: 'Av. Mercedes Indacochea N° C, Interior 21 Mz. “C” - Huacho.', telefono: '(01) 414-5000 Anexo: 29600', lat: -11.1067, lng: -77.6045 }
+        desc: 'Mesa de partes, juzgados de guardia, violencia y familia en Huacho/Huaura.',
+        sedes: [
+          { nombre: 'Módulo Corporativo de Familia', direccion: 'Esquina de la Calle Simón Bolivar N° 601 y Calle José Gálvez N° 305 - Huacho', telefono: '(01) 414-5000 Anexo: 29518', lat: -11.11079500, lng: -77.61097490 },
+          { nombre: 'Módulo Penal', direccion: 'Calle Ausejo Salas N° 387 - Huacho', telefono: '(01) 414-5000 Anexo: 29600', lat: -11.10403900, lng: -77.60691600 },
+          { nombre: 'Sede de Flagrancia', direccion: 'Av. Mercedes Indacochea N° C, Interior 21 Mz. “C” - Huacho.', telefono: '(01) 414-5000 Anexo: 29600', lat: -11.12471000, lng: -77.61039300 }
         ]
       },
       'bomberos': {
@@ -1008,7 +1295,7 @@
       document.body.style.overflow = '';
     }
 
-    document.getElementById('alert-description').addEventListener('input', function() {
+    document.getElementById('alert-description').addEventListener('input', function () {
       document.getElementById('alert-char-count').innerText = this.value.length + '/300';
     });
 
@@ -1313,7 +1600,7 @@
 
     function escapeHtml(str) {
       return String(str).replace(/[&<>"']/g, s => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
       }[s]));
     }
 
@@ -1379,14 +1666,14 @@
       userMenuBtn.setAttribute('aria-expanded', 'false');
       if (userMenuChevron) userMenuChevron.style.transform = 'rotate(0deg)';
     }
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
       if (!userMenuContainer.contains(e.target)) closeUserMenu();
     });
 
     function logoutUser() {
       closeUserMenu();
       if (confirm("¿Está seguro que desea cerrar sesión en el sistema de Orientación Judicial?")) {
-        try { localStorage.removeItem('pj_session'); sessionStorage.clear(); } catch (err) {}
+        try { localStorage.removeItem('pj_session'); sessionStorage.clear(); } catch (err) { }
         alert("Sesión cerrada correctamente.");
       }
     }
@@ -1465,7 +1752,7 @@
         (score >= 3 ? 'text-emerald-600' : score === 2 ? 'text-amber-600' : 'text-slate-400');
     }
 
-    document.getElementById('pwd-new').addEventListener('input', function() {
+    document.getElementById('pwd-new').addEventListener('input', function () {
       updatePasswordStrength(this.value);
       checkPasswordMatch();
     });
@@ -1517,7 +1804,7 @@
     // ============================================================
     // ===== ESC: CIERRA MENÚ DE USUARIO =====
     // ============================================================
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         closeUserMenu();
       }
@@ -1530,4 +1817,5 @@
   </script>
 
 </body>
+
 </html>
