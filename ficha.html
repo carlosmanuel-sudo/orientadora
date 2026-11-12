@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Caso - Corte Superior de Justicia de Huaura</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pjRed: '#7B1113', pjDarkRed: '#540809', pjBlue: '#0F2942',
+            pjDarkBlue: '#0A1C2D', pjGold: '#D4AF37', pjGoldLight: '#F3E5AB'
+          },
+          boxShadow: {
+            'card-soft': '0 8px 20px -4px rgba(15, 41, 66, 0.12)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-cinzel { font-family: 'Cinzel', serif; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: rgba(15, 41, 66, 0.25); border-radius: 9999px; }
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(122, 18, 29, 0.25); border-radius: 9999px; }
+
+    @keyframes modalIn { from { opacity: 0; transform: translateY(12px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .modal-anim { animation: modalIn 0.22s ease-out forwards; }
+    @keyframes fadeRowIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .row-anim { animation: fadeRowIn 0.3s ease-out forwards; }
+
+    /* ===== Estilos reutilizados del formulario original ===== */
+    .section-title {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: #0F2942;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid rgba(122, 18, 29, 0.15);
+    }
+    @media (min-width: 640px) {
+      .section-title { font-size: 1rem; }
+    }
+    .form-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.35rem;
+    }
+    .form-input {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border-radius: 0.75rem;
+      border: 1px solid #e2e8f0;
+      font-size: 0.8rem;
+      background: #fff;
+      transition: all 0.15s ease;
+    }
+    .form-input:focus {
+      border-color: #7B1113;
+      box-shadow: 0 0 0 3px rgba(123, 17, 19, 0.12);
+      outline: none;
+    }
+    .form-checkbox {
+      width: 0.9rem;
+      height: 0.9rem;
+      accent-color: #7B1113;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ===== Tabla ===== */
+    .case-row:hover { background: #fafafa; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-100 via-stone-100 to-slate-200 min-h-screen text-slate-800 flex flex-col antialiased selection:bg-pjRed selection:text-white">
+
+  <!-- ============================================================ -->
+  <!-- ===== MODAL FORMULARIO (CREAR / EDITAR) ===== -->
+  <!-- ============================================================ -->
+  <div id="form-modal" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-2 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-3xl w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[96vh] flex flex-col">
+
+      <!-- Header del modal -->
+      <div class="relative bg-gradient-to-r from-pjDarkRed via-pjRed to-pjBlue text-white p-4 sm:p-5 shrink-0">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+          <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+          <div class="absolute -left-6 -top-6 w-24 h-24 bg-amber-400/20 rounded-full blur-xl"></div>
+        </div>
+        <div class="flex items-start justify-between gap-3 relative">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+              <i id="form-modal-icon" class="fa-solid fa-folder-plus text-pjGold text-xl sm:text-2xl"></i>
+            </div>
+            <div class="min-w-0">
+              <h3 id="form-modal-title" class="text-sm sm:text-base md:text-lg font-bold leading-tight">Nueva Ficha de Atención</h3>
+              <p id="form-modal-subtitle" class="text-[10px] sm:text-xs text-amber-200/90 mt-0.5">Completa los datos de la persona usuaria, el caso atendido y su derivación</p>
+            </div>
+          </div>
+          <button onclick="cerrarModalCaso()" aria-label="Cerrar modal" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- FORMULARIO (con tus campos exactos) -->
+      <!-- ============================================================ -->
+      <form id="formRegistroCaso" onsubmit="guardarCaso(event)" class="p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8 flex-1 overflow-y-auto custom-scrollbar">
+
+        <!-- 1. INFORMACIÓN DEL USUARIO -->
+        <section>
+          <h3 class="section-title">
+            <i class="fa-solid fa-user-circle text-base"></i> 1. Información de la/del Usuaria/o
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+              <label for="nombres" class="form-label">Nombres y Apellidos *</label>
+              <input type="text" id="nombres" required placeholder="Ej. Haydee Rey Carhuachin" class="form-input">
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+              <div class="col-span-1">
+                <label for="tipoDoc" class="form-label">Tipo *</label>
+                <select id="tipoDoc" required class="form-input">
+                  <option value="DNI">DNI</option>
+                  <option value="CE">Carnet Ext.</option>
+                  <option value="Pasaporte">Pasaporte</option>
+                  <option value="Sin Doc">Sin Documento</option>
+                </select>
+              </div>
+              <div class="col-span-2">
+                <label for="numDoc" class="form-label">Número *</label>
+                <input type="text" id="numDoc" required placeholder="04043292" class="form-input">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label for="nacionalidad" class="form-label">Nacionalidad *</label>
+                <select id="nacionalidad" required class="form-input">
+                  <option value="Peruana" selected>Peruana</option>
+                  <option value="Extranjera">Extranjera</option>
+                </select>
+              </div>
+              <div>
+                <label for="edad" class="form-label">Edad</label>
+                <input type="number" id="edad" min="0" max="120" placeholder="62" class="form-input">
+              </div>
+            </div>
+
+            <div>
+              <label for="telefono" class="form-label">Número de Teléfono</label>
+              <input type="tel" id="telefono" placeholder="982286835" class="form-input">
+            </div>
+            <div>
+              <label for="direccion" class="form-label">Dirección</label>
+              <input type="text" id="direccion" placeholder="Augusto B. Leguía 509" class="form-input">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mt-6">
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <label class="form-label mb-3 border-b border-slate-200 pb-1">Tipo de Vulnerabilidad <span class="text-[9px] text-slate-400 font-normal normal-case">(Opcional)</span></label>
+              <div class="space-y-2.5">
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D] transition-colors">
+                  <input type="checkbox" name="vulnerabilidad" value="Pobreza" class="form-checkbox">
+                  <span>Persona en situación de pobreza</span>
+                </label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D] transition-colors">
+                  <input type="checkbox" name="vulnerabilidad" value="Discapacidad" class="form-checkbox">
+                  <span>Persona con discapacidad</span>
+                </label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D] transition-colors">
+                  <input type="checkbox" name="vulnerabilidad" value="Indigena" class="form-checkbox">
+                  <span>Población indígena, nativa o afrodescendiente</span>
+                </label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D] transition-colors">
+                  <input type="checkbox" name="vulnerabilidad" value="Migrante" class="form-checkbox">
+                  <span>Persona migrante</span>
+                </label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D] transition-colors">
+                  <input type="checkbox" name="vulnerabilidad" value="Violencia" class="form-checkbox">
+                  <span>Persona víctima de violencia</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <label class="form-label mb-3 border-b border-slate-200 pb-1">Género</label>
+                <div class="flex flex-wrap gap-3 text-xs">
+                  <label class="flex items-center gap-1.5 cursor-pointer hover:text-[#7A121D]">
+                    <input type="radio" name="genero" value="Femenino" class="form-checkbox" checked> Femenino
+                  </label>
+                  <label class="flex items-center gap-1.5 cursor-pointer hover:text-[#7A121D]">
+                    <input type="radio" name="genero" value="Masculino" class="form-checkbox"> Masculino
+                  </label>
+                  <label class="flex items-center gap-1.5 cursor-pointer hover:text-[#7A121D]">
+                    <input type="radio" name="genero" value="No dice" class="form-checkbox"> Prefiere no decirlo
+                  </label>
+                </div>
+              </div>
+
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <label class="form-label mb-3 border-b border-slate-200 pb-1">Lengua Materna</label>
+                <div class="flex flex-wrap gap-3 text-xs">
+                  <label class="flex items-center gap-1.5 cursor-pointer hover:text-[#7A121D]">
+                    <input type="radio" name="lengua" value="Español" class="form-checkbox" checked> Español
+                  </label>
+                  <label class="flex items-center gap-1.5 cursor-pointer hover:text-[#7A121D]">
+                    <input type="radio" name="lengua" value="Quechua" class="form-checkbox"> Quechua
+                  </label>
+                  <label class="flex items-center gap-1.5 cursor-pointer hover:text-[#7A121D]">
+                    <input type="radio" name="lengua" value="Aymara" class="form-checkbox"> Aymara
+                  </label>
+                  <label class="flex items-center gap-1.5 cursor-pointer hover:text-[#7A121D]">
+                    <input type="radio" name="lengua" value="Otro" class="form-checkbox"> Otro
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. INFORMACIÓN DEL CASO -->
+        <section>
+          <h3 class="section-title">
+            <i class="fa-solid fa-folder-open text-base"></i> 2. Información del Caso Atendido
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <label class="form-label mb-3 border-b border-slate-200 pb-1">Caso(s) Atendido(s) <span class="text-[9px] text-slate-400 font-normal normal-case">(Marque con una X)</span></label>
+              <div class="space-y-2.5 max-h-64 overflow-y-auto custom-scrollbar pr-2">
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Alimentos" class="form-checkbox"> Alimentos</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Tenencia" class="form-checkbox"> Tenencia</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Filiación" class="form-checkbox"> Filiación</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Separación de hecho" class="form-checkbox"> Separación de hecho</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Inscripción de partida" class="form-checkbox"> Inscripción de partida</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Abandono de hogar" class="form-checkbox"> Abandono de hogar</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Tocamientos indebidos" class="form-checkbox"> Tocamientos indebidos</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Discriminación" class="form-checkbox"> Discriminación</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Renovación de DNI" class="form-checkbox"> Renovación de DNI</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Sustracción de menor" class="form-checkbox"> Sustracción de menor</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Designación de apoyos" class="form-checkbox"> Designación de apoyos y salvaguardias</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="materia" value="Violencia contra la mujer e IGF" class="form-checkbox"> Violencia contra la mujer e IGF</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer font-semibold text-[#7A121D]">
+                  <input type="checkbox" id="checkOtros" name="materia" value="Otros" class="form-checkbox" onchange="toggleOtrosInput()"> Otros (Especificar abajo)
+                </label>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <label class="form-label mb-3 border-b border-slate-200 pb-1">Tipo de Violencia <span class="text-[9px] text-slate-400 font-normal normal-case">(del total atendidas en violencia)</span></label>
+                <div class="space-y-2.5">
+                  <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="violencia" value="Física" class="form-checkbox"> Física</label>
+                  <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="violencia" value="Sexual" class="form-checkbox"> Sexual</label>
+                  <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="violencia" value="Psicológica" class="form-checkbox"> Psicológica</label>
+                  <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="checkbox" name="violencia" value="Económica/Patrimonial" class="form-checkbox"> Económica / Patrimonial</label>
+                </div>
+              </div>
+
+              <div id="otrosContainer" class="hidden">
+                <label for="otrosDetalle" class="form-label text-[#7A121D]">Especifique el otro caso *</label>
+                <input type="text" id="otrosDetalle" placeholder="Ej. Denuncia por contaminación..." class="form-input border-[#7A121D] ring-1 ring-[#7A121D]/20">
+              </div>
+
+              <div>
+                <label for="expediente" class="form-label">Exp. N° <span class="text-[9px] text-slate-400 font-normal normal-case">(en caso corresponda, opcional)</span></label>
+                <input type="text" id="expediente" placeholder="Ej. 0142-2024" class="form-input">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. DERIVACIÓN Y RESEÑA -->
+        <section>
+          <h3 class="section-title">
+            <i class="fa-solid fa-share-nodes text-base"></i> 3. Derivación y Reseña
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <label class="form-label mb-3 border-b border-slate-200 pb-1">Derivación del Caso <span class="text-[9px] text-slate-400 font-normal normal-case">(Marque con una X)</span></label>
+              <div class="space-y-2.5">
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="radio" name="derivacion" value="Poder Judicial (PJ)" class="form-checkbox" checked> Poder Judicial (PJ)</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="radio" name="derivacion" value="Defensa Pública" class="form-checkbox"> Defensa Pública del MINJUSDH</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="radio" name="derivacion" value="CEM" class="form-checkbox"> Centro de Emergencia Mujer (CEM)</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="radio" name="derivacion" value="PNP" class="form-checkbox"> Policía Nacional del Perú (PNP)</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="radio" name="derivacion" value="Fiscalía" class="form-checkbox"> Ministerio Público (MP) / Fiscalía</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="radio" name="derivacion" value="DEMUNA" class="form-checkbox"> DEMUNA</label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer hover:text-[#7A121D]"><input type="radio" name="derivacion" value="Otra" class="form-checkbox"> Otra entidad</label>
+              </div>
+            </div>
+
+            <div class="flex flex-col">
+              <label for="resena" class="form-label">Breve Reseña de la Atención *</label>
+              <textarea id="resena" required rows="8" placeholder="Describa brevemente lo sucedido, la solicitud del ciudadano y las acciones tomadas..." class="form-input flex-1 resize-none custom-scrollbar text-sm leading-relaxed"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer del formulario -->
+        <div class="pt-6 border-t border-slate-200 flex flex-col-reverse sm:flex-row items-center justify-end gap-3">
+          <button type="button" onclick="cerrarModalCaso()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl text-slate-600 font-bold hover:bg-slate-100 transition-colors border border-transparent hover:border-slate-300">
+            Cancelar
+          </button>
+          <button type="submit" class="w-full sm:w-auto px-8 py-2.5 bg-[#7A121D] hover:bg-[#5E0D16] text-white font-bold rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span id="btnGuardarTexto">Guardar Registro</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ===== MODAL CONFIRMACIÓN ELIMINAR ===== -->
+  <!-- ============================================================ -->
+  <div id="delete-modal" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim">
+      <div class="p-5 text-center">
+        <div class="w-14 h-14 mx-auto rounded-full bg-red-100 flex items-center justify-center mb-3">
+          <i class="fa-solid fa-triangle-exclamation text-red-600 text-2xl"></i>
+        </div>
+        <h3 class="text-base font-bold text-pjBlue mb-1">¿Eliminar?</h3>
+        <p class="text-xs text-slate-500 mb-1">Esta acción no se puede deshacer.</p>
+        <p id="delete-case-name" class="text-xs font-semibold text-pjRed truncate"></p>
+      </div>
+      <div class="p-3 border-t border-slate-200 bg-slate-50 flex gap-2">
+        <button onclick="cerrarModalEliminar()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-100 transition active:scale-95">Cancelar</button>
+        <button onclick="confirmarEliminar()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-pjDarkRed text-white font-bold text-xs shadow-md hover:shadow-lg transition active:scale-95 flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-trash text-[11px]"></i><span>Eliminar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ===== CONTENEDOR PRINCIPAL ===== -->
+  <!-- ============================================================ -->
+  <div class="w-full min-h-screen flex flex-col bg-white shadow-2xl relative">
+
+    <!-- HEADER -->
+    <header class="bg-gradient-to-r from-pjDarkRed via-pjRed to-pjBlue text-white pt-4 pb-5 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 shadow-lg relative z-40">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
+        <div class="absolute -left-10 -top-10 w-36 h-36 bg-amber-400/10 rounded-full blur-xl"></div>
+      </div>
+      <div class="flex items-center justify-between pb-3 border-b border-white/15 mb-3 text-[11px] md:text-xs text-white/80 font-medium tracking-wide relative">
+        <div class="flex items-center gap-1.5">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>PODER JUDICIAL DEL PERÚ</span>
+        </div>
+        <span class="bg-white/10 px-2 py-0.5 rounded-full text-[10px] md:text-[11px] tracking-wider text-amber-200 font-semibold border border-white/10">PROVINCIA HUAURA</span>
+      </div>
+      <div class="flex items-center justify-between gap-3 md:gap-6 relative">
+        <div class="flex items-center gap-3 md:gap-4 flex-1">
+          <div class="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center p-2 md:p-2.5 shadow-inner shrink-0 group">
+            <i class="fa-solid fa-scale-balanced text-pjGold text-2xl md:text-3xl lg:text-4xl transition-transform duration-300 group-hover:scale-110"></i>
+          </div>
+          <div class="min-w-0">
+            <h1 class="text-[13px] sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-bold tracking-tight text-white leading-tight font-cinzel">CORTE SUPERIOR DE JUSTICIA DE HUAURA</h1>
+            <p class="text-[10px] sm:text-[11px] md:text-xs lg:text-sm text-pjGoldLight/90 font-medium tracking-wide flex items-center gap-1 mt-0.5">
+              <i class="fa-solid fa-circle-check text-pjGold text-xs md:text-sm shrink-0"></i>
+              <span>Orientadoras Judiciales en Línea</span>
+            </p>
+          </div>
+        </div>
+        <div class="shrink-0">
+          <a href="./" class="inline-flex items-center gap-2 px-3 md:px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs md:text-sm font-semibold transition active:scale-95">
+            <i class="fa-solid fa-arrow-left text-[11px]"></i>
+            <span class="hidden sm:inline">Volver al inicio</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="flex-1 w-full px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 py-6 lg:py-8">
+
+      <!-- Título + botón nuevo -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="w-2.5 h-2.5 rounded-full bg-pjRed"></span>
+            <h2 class="text-base sm:text-lg lg:text-xl font-bold text-pjBlue uppercase tracking-wider">Fichas de Atención</h2>
+          </div>
+          <p class="text-xs md:text-sm text-slate-500">Gestiona y consulta las fichas de orientación judicial del Distrito Judicial de Huaura.</p>
+        </div>
+        <button onclick="abrirModalCaso()" class="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-pjRed to-pjDarkRed text-white font-bold text-xs md:text-sm shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95">
+          <i class="fa-solid fa-plus text-[11px]"></i>
+          <span>Nueva Ficha de Atención</span>
+        </button>
+      </div>
+
+      <!-- Estadísticas -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+        <div class="bg-gradient-to-br from-pjBlue to-pjDarkBlue text-white rounded-2xl p-3 md:p-4 shadow-card-soft border border-white/10">
+          <div class="flex items-center justify-between">
+            <p class="text-[10px] md:text-xs uppercase tracking-wider text-slate-300 font-semibold">Total</p>
+            <i class="fa-solid fa-folder-open text-pjGold text-sm"></i>
+          </div>
+          <p id="stat-total" class="text-xl md:text-2xl font-extrabold text-white mt-1">0</p>
+        </div>
+        <div class="bg-gradient-to-br from-red-600 to-pjDarkRed text-white rounded-2xl p-3 md:p-4 shadow-card-soft border border-white/10">
+          <div class="flex items-center justify-between">
+            <p class="text-[10px] md:text-xs uppercase tracking-wider text-amber-100 font-semibold">Violencia</p>
+            <i class="fa-solid fa-hand-fist text-amber-300 text-sm"></i>
+          </div>
+          <p id="stat-violencia" class="text-xl md:text-2xl font-extrabold text-white mt-1">0</p>
+        </div>
+        <div class="bg-gradient-to-br from-amber-500 to-amber-700 text-white rounded-2xl p-3 md:p-4 shadow-card-soft border border-white/10">
+          <div class="flex items-center justify-between">
+            <p class="text-[10px] md:text-xs uppercase tracking-wider text-amber-100 font-semibold">Alimentos</p>
+            <i class="fa-solid fa-scale-balanced text-amber-100 text-sm"></i>
+          </div>
+          <p id="stat-alimentos" class="text-xl md:text-2xl font-extrabold text-white mt-1">0</p>
+        </div>
+        <div class="bg-gradient-to-br from-emerald-600 to-emerald-800 text-white rounded-2xl p-3 md:p-4 shadow-card-soft border border-white/10">
+          <div class="flex items-center justify-between">
+            <p class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-100 font-semibold">Este mes</p>
+            <i class="fa-solid fa-calendar-days text-emerald-100 text-sm"></i>
+          </div>
+          <p id="stat-mes" class="text-xl md:text-2xl font-extrabold text-white mt-1">0</p>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft p-3 md:p-4 mb-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <div class="relative">
+            <input type="text" id="filter-search" oninput="renderTabla()" placeholder="Buscar por nombre, doc o reseña..."
+              class="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-xs md:text-sm transition">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          </div>
+          <select id="filter-materia" onchange="renderTabla()"
+            class="px-3 py-2 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-xs md:text-sm transition bg-white">
+            <option value="">Todas las materias</option>
+            <option value="Alimentos">Alimentos</option>
+            <option value="Tenencia">Tenencia</option>
+            <option value="Filiación">Filiación</option>
+            <option value="Violencia contra la mujer e IGF">Violencia contra la mujer e IGF</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <select id="filter-derivacion" onchange="renderTabla()"
+            class="px-3 py-2 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-xs md:text-sm transition bg-white">
+            <option value="">Todas las derivaciones</option>
+            <option value="Poder Judicial (PJ)">Poder Judicial</option>
+            <option value="Defensa Pública">Defensa Pública</option>
+            <option value="CEM">CEM</option>
+            <option value="PNP">PNP</option>
+            <option value="Fiscalía">Fiscalía</option>
+            <option value="DEMUNA">DEMUNA</option>
+            <option value="Otra">Otra</option>
+          </select>
+          <select id="filter-vulnerabilidad" onchange="renderTabla()"
+            class="px-3 py-2 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-xs md:text-sm transition bg-white">
+            <option value="">Todas las vulnerabilidades</option>
+            <option value="Pobreza">Pobreza</option>
+            <option value="Discapacidad">Discapacidad</option>
+            <option value="Indigena">Indígena</option>
+            <option value="Migrante">Migrante</option>
+            <option value="Violencia">Víctima de violencia</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tabla de casos -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs md:text-sm">
+            <thead class="bg-gradient-to-r from-pjBlue to-pjDarkBlue text-white">
+              <tr>
+                <th class="text-left px-3 py-2.5 font-bold text-[10px] md:text-xs uppercase tracking-wider">Código</th>
+                <th class="text-left px-3 py-2.5 font-bold text-[10px] md:text-xs uppercase tracking-wider">Ciudadano/a</th>
+                <th class="text-left px-3 py-2.5 font-bold text-[10px] md:text-xs uppercase tracking-wider hidden md:table-cell">Materia</th>
+                <th class="text-left px-3 py-2.5 font-bold text-[10px] md:text-xs uppercase tracking-wider hidden lg:table-cell">Derivación</th>
+                <th class="text-center px-3 py-2.5 font-bold text-[10px] md:text-xs uppercase tracking-wider hidden sm:table-cell">Fecha</th>
+                <th class="text-center px-3 py-2.5 font-bold text-[10px] md:text-xs uppercase tracking-wider">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="cases-tbody"></tbody>
+          </table>
+        </div>
+        <div id="cases-empty" class="p-8 text-center hidden">
+          <div class="w-14 h-14 mx-auto rounded-full bg-slate-100 flex items-center justify-center mb-3">
+            <i class="fa-solid fa-folder-open text-slate-400 text-xl"></i>
+          </div>
+          <p class="text-sm font-semibold text-slate-500">No hay casos registrados</p>
+          <p class="text-xs text-slate-400 mt-1">Usa el botón "Nuevo caso" para registrar el primero.</p>
+        </div>
+        <div class="px-3 py-2.5 border-t border-slate-100 bg-slate-50 flex items-center justify-between text-[10px] md:text-xs text-slate-500">
+          <span id="cases-count">0 casos</span>
+          <span><i class="fa-solid fa-lock text-[9px] mr-1"></i>Datos guardados localmente</span>
+        </div>
+      </div>
+
+    </main>
+
+    <footer class="bg-pjBlue border-t-2 border-pjGold/60 text-white px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 py-4 md:py-6 text-center shadow-lg relative w-full">
+      <div class="flex items-center justify-center gap-1.5 text-pjGold mb-1 md:mb-2">
+        <i class="fa-solid fa-heart text-xs md:text-sm"></i>
+        <span class="text-[10px] md:text-xs uppercase font-bold tracking-widest text-amber-200">Justicia Itinerante</span>
+      </div>
+      <p class="text-[11px] sm:text-xs md:text-sm lg:text-base text-slate-200 italic font-medium leading-relaxed max-w-sm md:max-w-2xl lg:max-w-4xl mx-auto">
+        &ldquo;Justicia itinerante y solidaria: orientando con el corazón en cada rincón de Huaura.&rdquo;
+      </p>
+      <div class="mt-2 md:mt-3 text-[9px] md:text-xs text-slate-400 font-normal max-w-3xl mx-auto">
+        Comisión Distrital de Acceso a la Justicia de Personas en Condición de Vulnerabilidad y Justicia en tu Comunidad
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ===== SCRIPTS ===== -->
+  <!-- ============================================================ -->
+  <script>
+    // ============================================================
+    // ===== ESTADO Y PERSISTENCIA =====
+    // ============================================================
+    const STORAGE_KEY = 'pj_casos_huaura_v1';
+    let casos = [];
+    let editandoId = null;
+    let eliminandoId = null;
+
+    function cargarCasos() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        casos = raw ? JSON.parse(raw) : [];
+      } catch (e) { casos = []; }
+    }
+    function guardarCasos() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(casos)); } catch (e) {}
+    }
+
+    function generarCodigo() {
+      const year = new Date().getFullYear();
+      const num = (casos.length + 1).toString().padStart(4, '0');
+      return `Ficha-${year}-${num}`;
+    }
+
+    // ============================================================
+    // ===== MODAL FORMULARIO =====
+    // ============================================================
+    function abrirModalCaso(caso = null) {
+      const modal = document.getElementById('form-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+
+      const form = document.getElementById('formRegistroCaso');
+      form.reset();
+      document.getElementById('otrosContainer').classList.add('hidden');
+      document.getElementById('checkOtros').checked = false;
+
+      if (caso) {
+        editandoId = caso.id;
+        document.getElementById('form-modal-title').innerText = 'Editar Ficha de Atención';
+        document.getElementById('form-modal-subtitle').innerText = `Modificando ${caso.codigo}`;
+        document.getElementById('form-modal-icon').className = 'fa-solid fa-pen-to-square text-pjGold text-xl sm:text-2xl';
+        document.getElementById('btnGuardarTexto').innerText = 'Actualizar Registro';
+
+        // Campos de texto
+        document.getElementById('nombres').value = caso.nombres || '';
+        document.getElementById('tipoDoc').value = caso.tipoDoc || 'DNI';
+        document.getElementById('numDoc').value = caso.numDoc || '';
+        document.getElementById('nacionalidad').value = caso.nacionalidad || 'Peruana';
+        document.getElementById('edad').value = caso.edad || '';
+        document.getElementById('telefono').value = caso.telefono || '';
+        document.getElementById('direccion').value = caso.direccion || '';
+        document.getElementById('expediente').value = caso.expediente || '';
+        document.getElementById('resena').value = caso.resena || '';
+
+        // Radios
+        setRadio('genero', caso.genero || 'Femenino');
+        setRadio('lengua', caso.lengua || 'Español');
+        setRadio('derivacion', caso.derivacion || 'Poder Judicial (PJ)');
+
+        // Checkboxes múltiples
+        setChecks('vulnerabilidad', caso.vulnerabilidad || []);
+        setChecks('materia', caso.materia || []);
+        setChecks('violencia', caso.violencia || []);
+
+        // "Otros" detalle
+        if ((caso.materia || []).includes('Otros')) {
+          document.getElementById('checkOtros').checked = true;
+          document.getElementById('otrosContainer').classList.remove('hidden');
+          document.getElementById('otrosDetalle').value = caso.otrosDetalle || '';
+        }
+      } else {
+        editandoId = null;
+        document.getElementById('form-modal-title').innerText = 'Nueva Ficha de Atención';
+        document.getElementById('form-modal-subtitle').innerText = 'Completa los datos de la persona usuaria, el caso atendido y su derivación';
+        document.getElementById('form-modal-icon').className = 'fa-solid fa-folder-plus text-pjGold text-xl sm:text-2xl';
+        document.getElementById('btnGuardarTexto').innerText = 'Guardar Registro';
+      }
+
+      setTimeout(() => document.getElementById('nombres').focus(), 100);
+    }
+
+    function cerrarModalCaso() {
+      const modal = document.getElementById('form-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+      editandoId = null;
+    }
+
+    function setRadio(name, value) {
+      const radios = document.querySelectorAll(`input[name="${name}"]`);
+      radios.forEach(r => { r.checked = (r.value === value); });
+    }
+
+    function setChecks(name, values) {
+      const checks = document.querySelectorAll(`input[name="${name}"]`);
+      checks.forEach(c => { c.checked = values.includes(c.value); });
+    }
+
+    function getChecks(name) {
+      return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(c => c.value);
+    }
+
+    function getRadio(name) {
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : '';
+    }
+
+    function toggleOtrosInput() {
+      const check = document.getElementById('checkOtros');
+      const cont = document.getElementById('otrosContainer');
+      if (check.checked) cont.classList.remove('hidden');
+      else {
+        cont.classList.add('hidden');
+        document.getElementById('otrosDetalle').value = '';
+      }
+    }
+
+    // ============================================================
+    // ===== GUARDAR (CREAR / ACTUALIZAR) =====
+    // ============================================================
+    function guardarCaso(e) {
+      e.preventDefault();
+
+      const nombres = document.getElementById('nombres').value.trim();
+      const tipoDoc = document.getElementById('tipoDoc').value;
+      const numDoc = document.getElementById('numDoc').value.trim();
+      const nacionalidad = document.getElementById('nacionalidad').value;
+      const edad = document.getElementById('edad').value;
+      const telefono = document.getElementById('telefono').value.trim();
+      const direccion = document.getElementById('direccion').value.trim();
+      const expediente = document.getElementById('expediente').value.trim();
+      const resena = document.getElementById('resena').value.trim();
+
+      const vulnerabilidad = getChecks('vulnerabilidad');
+      const genero = getRadio('genero');
+      const lengua = getRadio('lengua');
+      const materia = getChecks('materia');
+      const violencia = getChecks('violencia');
+      const derivacion = getRadio('derivacion');
+
+      // Validaciones
+      if (!nombres || !numDoc || !resena) {
+        alert('Completa los campos obligatorios (*).');
+        return;
+      }
+      if (materia.length === 0) {
+        alert('Selecciona al menos un caso atendido en la sección 2.');
+        return;
+      }
+      if (materia.includes('Otros') && !document.getElementById('otrosDetalle').value.trim()) {
+        alert('Especifica el detalle del caso "Otros".');
+        return;
+      }
+
+      const otrosDetalle = materia.includes('Otros')
+        ? document.getElementById('otrosDetalle').value.trim()
+        : '';
+
+      const payload = {
+        id: editandoId || Date.now(),
+        codigo: editandoId
+          ? (casos.find(c => c.id === editandoId)?.codigo || generarCodigo())
+          : generarCodigo(),
+        nombres, tipoDoc, numDoc, nacionalidad, edad, telefono, direccion,
+        vulnerabilidad, genero, lengua,
+        materia, violencia, otrosDetalle, expediente,
+        derivacion, resena,
+        fecha: editandoId
+          ? (casos.find(c => c.id === editandoId)?.fecha || new Date().toISOString())
+          : new Date().toISOString(),
+        actualizadoEn: new Date().toISOString()
+      };
+
+      if (editandoId) {
+        const idx = casos.findIndex(c => c.id === editandoId);
+        if (idx >= 0) casos[idx] = payload;
+        mostrarToast('✅ Caso actualizado correctamente.');
+      } else {
+        casos.unshift(payload);
+        mostrarToast('✅ Caso registrado correctamente.');
+      }
+
+      guardarCasos();
+      renderTabla();
+      actualizarStats();
+      cerrarModalCaso();
+    }
+
+    // ============================================================
+    // ===== ELIMINAR =====
+    // ============================================================
+    function abrirModalEliminar(id) {
+      const c = casos.find(x => x.id === id);
+      if (!c) return;
+      eliminandoId = id;
+      document.getElementById('delete-case-name').innerText = `${c.codigo} — ${c.nombres}`;
+      const modal = document.getElementById('delete-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarModalEliminar() {
+      const modal = document.getElementById('delete-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+      eliminandoId = null;
+    }
+
+    function confirmarEliminar() {
+      if (!eliminandoId) return;
+      casos = casos.filter(c => c.id !== eliminandoId);
+      guardarCasos();
+      renderTabla();
+      actualizarStats();
+      cerrarModalEliminar();
+      mostrarToast('🗑️ Caso eliminado.');
+    }
+
+    // ============================================================
+    // ===== RENDER TABLA =====
+    // ============================================================
+    function renderTabla() {
+      const tbody = document.getElementById('cases-tbody');
+      const empty = document.getElementById('cases-empty');
+      const count = document.getElementById('cases-count');
+
+      const search = (document.getElementById('filter-search').value || '').toLowerCase().trim();
+      const fm = document.getElementById('filter-materia').value;
+      const fd = document.getElementById('filter-derivacion').value;
+      const fv = document.getElementById('filter-vulnerabilidad').value;
+
+      let filtrados = casos.filter(c => {
+        if (search) {
+          const blob = `${c.nombres} ${c.numDoc} ${c.resena} ${c.codigo}`.toLowerCase();
+          if (!blob.includes(search)) return false;
+        }
+        if (fm && !(c.materia || []).includes(fm)) return false;
+        if (fd && c.derivacion !== fd) return false;
+        if (fv && !(c.vulnerabilidad || []).includes(fv)) return false;
+        return true;
+      });
+
+      tbody.innerHTML = '';
+      count.innerText = `${filtrados.length} caso${filtrados.length === 1 ? '' : 's'}`;
+
+      if (filtrados.length === 0) {
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+
+      filtrados.forEach(c => {
+        const tr = document.createElement('tr');
+        tr.className = 'case-row row-anim border-b border-slate-100 transition-colors';
+        const materiaTags = (c.materia || []).slice(0, 2).map(m =>
+          `<span class="inline-block bg-pjRed/10 text-pjRed text-[9px] font-bold px-1.5 py-0.5 rounded mr-1">${escapeHtml(m)}</span>`
+        ).join('');
+        const masMaterias = (c.materia || []).length > 2
+          ? `<span class="text-[9px] text-slate-400">+${(c.materia || []).length - 2}</span>` : '';
+
+        tr.innerHTML = `
+          <td class="px-3 py-2.5">
+            <span class="text-[10px] font-bold text-pjBlue">${escapeHtml(c.codigo)}</span>
+          </td>
+          <td class="px-3 py-2.5">
+            <p class="text-xs font-bold text-slate-800 truncate max-w-[180px]">${escapeHtml(c.nombres)}</p>
+            <p class="text-[10px] text-slate-500">${escapeHtml(c.tipoDoc)}: ${escapeHtml(c.numDoc)}</p>
+          </td>
+          <td class="px-3 py-2.5 hidden md:table-cell">${materiaTags}${masMaterias}</td>
+          <td class="px-3 py-2.5 hidden lg:table-cell">
+            <span class="text-[10px] font-semibold text-slate-600">${escapeHtml(c.derivacion || '—')}</span>
+          </td>
+          <td class="px-3 py-2.5 text-center hidden sm:table-cell">
+            <span class="text-[10px] text-slate-500">${formatFecha(c.fecha)}</span>
+          </td>
+          <td class="px-3 py-2.5">
+            <div class="flex items-center justify-center gap-1.5">
+              <button onclick="abrirModalCaso(${c.id})" title="Editar" class="w-7 h-7 rounded-lg bg-pjBlue/10 text-pjBlue hover:bg-pjBlue hover:text-white transition flex items-center justify-center active:scale-90">
+                <i class="fa-solid fa-pen text-[10px]"></i>
+              </button>
+              <button onclick="abrirModalEliminar(${c.id})" title="Eliminar" class="w-7 h-7 rounded-lg bg-pjRed/10 text-pjRed hover:bg-pjRed hover:text-white transition flex items-center justify-center active:scale-90">
+                <i class="fa-solid fa-trash text-[10px]"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function actualizarStats() {
+      document.getElementById('stat-total').innerText = casos.length;
+      document.getElementById('stat-violencia').innerText = casos.filter(c =>
+        (c.materia || []).includes('Violencia contra la mujer e IGF') || (c.violencia || []).length > 0
+      ).length;
+      document.getElementById('stat-alimentos').innerText = casos.filter(c =>
+        (c.materia || []).includes('Alimentos')
+      ).length;
+      const now = new Date();
+      document.getElementById('stat-mes').innerText = casos.filter(c => {
+        const d = new Date(c.fecha);
+        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      }).length;
+    }
+
+    function formatFecha(iso) {
+      try {
+        const d = new Date(iso);
+        return d.toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' });
+      } catch (e) { return '—'; }
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '').replace(/[&<>"']/g, s => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[s]));
+    }
+
+    // ============================================================
+    // ===== TOAST =====
+    // ============================================================
+    function mostrarToast(msg) {
+      const t = document.createElement('div');
+      t.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 z-[110] bg-pjBlue text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-2xl border border-white/10 flex items-center gap-2';
+      t.innerHTML = `<i class="fa-solid fa-circle-check text-amber-300"></i><span>${escapeHtml(msg)}</span>`;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; }, 2400);
+      setTimeout(() => t.remove(), 2800);
+    }
+
+    // ============================================================
+    // ===== INICIALIZACIÓN =====
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarCasos();
+      renderTabla();
+      actualizarStats();
+    });
+
+    // ESC cierra modales
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (!document.getElementById('form-modal').classList.contains('hidden')) cerrarModalCaso();
+        if (!document.getElementById('delete-modal').classList.contains('hidden')) cerrarModalEliminar();
+      }
+    });
+  </script>
+
+</body>
+</html>

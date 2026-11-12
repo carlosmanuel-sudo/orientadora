@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corte Superior de Justicia de Huaura - Orientación y Atención Judicial</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pjRed: '#7B1113', pjDarkRed: '#540809', pjBlue: '#0F2942',
+            pjDarkBlue: '#0A1C2D', pjGold: '#D4AF37', pjGoldLight: '#F3E5AB'
+          },
+          boxShadow: {
+            'card-soft': '0 8px 20px -4px rgba(15, 41, 66, 0.12)'
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'ping-slow': 'ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-cinzel { font-family: 'Cinzel', serif; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: rgba(15, 41, 66, 0.2); border-radius: 9999px; }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(12px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .modal-anim { animation: modalIn 0.22s ease-out forwards; }
+
+    /* ===== ALERTAS EN VIVO ===== */
+    @keyframes alertIn {
+      from { opacity: 0; transform: translateX(-12px) scale(0.98); }
+      to   { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    .alert-item { animation: alertIn 0.35s ease-out forwards; }
+    .alert-item.pulse-border { animation: alertIn 0.35s ease-out forwards, pulseBorder 2s ease-in-out infinite 0.35s; }
+    @keyframes pulseBorder {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.35); }
+      50%      { box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.85); }
+    }
+    .live-dot { animation: livePulse 1.4s ease-in-out infinite; }
+    .alerts-scroll::-webkit-scrollbar { width: 4px; }
+    .alerts-scroll::-webkit-scrollbar-thumb { background: rgba(15, 41, 66, 0.25); border-radius: 9999px; }
+
+    /* ===== TABS DEL MODAL DE ALIMENTOS ===== */
+    .tab-btn {
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background-color: #ffffff;
+      color: #0F2942; /* pjBlue */
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .tab-btn.active i {
+      color: #7B1113; /* pjRed */
+    }
+    .tab-btn:not(.active):hover {
+      color: #0F2942;
+    }
+    .tab-panel {
+      display: none;
+    }
+    .tab-panel.active {
+      display: block;
+      animation: fadeTabIn 0.25s ease-out;
+    }
+    @keyframes fadeTabIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== LISTA DE SEDES EN MODAL SERVICIOS ===== */
+    .sede-card {
+      transition: all 0.2s ease;
+    }
+    .sede-card:hover {
+      border-color: rgba(123, 17, 19, 0.3);
+      box-shadow: 0 4px 12px -2px rgba(15, 41, 66, 0.08);
+    }
+
+    /* ===== ANIMACIÓN DE ALERTA ACTIVA EN BOTÓN DE PÁNICO ===== */
+    @keyframes panicPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 8px rgba(185, 28, 28, 0.15), 0 0 25px rgba(185, 28, 28, 0.45);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 0 14px rgba(185, 28, 28, 0.05), 0 0 40px rgba(185, 28, 28, 0.65);
+        transform: scale(1.03);
+      }
+    }
+    .panic-active {
+      animation: panicPulse 1.8s ease-in-out infinite !important;
+    }
+    @keyframes ringPulse {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      100% { transform: scale(1.15); opacity: 0; }
+    }
+    .panic-ring-active {
+      animation: ringPulse 2s ease-out infinite !important;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-100 via-stone-100 to-slate-200 min-h-screen text-slate-800 flex flex-col antialiased selection:bg-pjRed selection:text-white">
+
+  <!-- ===== MODAL SERVICIOS (con lista de sedes) ===== -->
+  <div id="service-modal" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
+    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[92vh] flex flex-col">
+      <!-- Header -->
+      <div class="relative bg-gradient-to-r from-pjDarkRed via-pjRed to-pjBlue text-white p-4 sm:p-5 shrink-0">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+          <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+          <div class="absolute -left-6 -top-6 w-24 h-24 bg-amber-400/20 rounded-full blur-xl"></div>
+        </div>
+        <div class="flex items-start justify-between gap-3 relative">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-shield-halved text-pjGold text-xl sm:text-2xl"></i>
+            </div>
+            <div class="min-w-0">
+              <h3 id="modal-title" class="text-sm sm:text-base md:text-lg font-bold leading-tight"></h3>
+              <p id="modal-subtitle" class="text-[10px] sm:text-xs text-amber-200/90 mt-0.5"></p>
+            </div>
+          </div>
+          <button onclick="closeModal()" aria-label="Cerrar modal" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div class="px-4 sm:px-5 pt-3 shrink-0">
+        <p id="modal-desc" class="text-xs text-slate-600 leading-relaxed"></p>
+      </div>
+
+      <!-- Lista de sedes -->
+      <div id="modal-sedes-list" class="px-4 sm:px-5 py-3 overflow-y-auto flex-1 space-y-2"></div>
+
+      <!-- Footer -->
+      <div class="p-3 sm:p-4 border-t border-slate-200 bg-slate-50 shrink-0">
+        <button onclick="closeModal()" class="w-full py-2.5 px-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-100 transition active:scale-95">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL DEMANDA DE ALIMENTOS ===== -->
+  <div id="alimentos-modal" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
+    <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[92vh] flex flex-col">
+      <div class="relative bg-gradient-to-r from-pjDarkRed via-pjRed to-pjBlue text-white p-4 sm:p-5 shrink-0">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+          <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+          <div class="absolute -left-6 -top-6 w-24 h-24 bg-amber-400/20 rounded-full blur-xl"></div>
+        </div>
+        <div class="flex items-start justify-between gap-3 relative">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-scale-balanced text-pjGold text-xl sm:text-2xl"></i>
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-sm sm:text-base md:text-lg font-bold leading-tight">Demanda de pensión de alimentos</h3>
+              <p class="text-[10px] sm:text-xs text-amber-200/90 mt-0.5">Documentos que necesitas según tu caso</p>
+            </div>
+          </div>
+          <button onclick="closeAlimentosModal()" aria-label="Cerrar modal" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+      <div class="px-3 sm:px-5 pt-3 sm:pt-4 shrink-0">
+        <div class="grid grid-cols-2 gap-1.5 bg-slate-100 p-1 rounded-xl">
+          <button id="tab-menor" onclick="switchAlimentosTab('menor')" class="tab-btn active py-2 px-3 rounded-lg text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 text-slate-600">
+            <i class="fa-solid fa-child-reaching"></i><span>Menor de edad</span>
+          </button>
+          <button id="tab-adulto" onclick="switchAlimentosTab('adulto')" class="tab-btn py-2 px-3 rounded-lg text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 text-slate-600">
+            <i class="fa-solid fa-person-cane"></i><span>Adulto mayor</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="px-3 sm:px-5 py-3 sm:py-4 overflow-y-auto flex-1">
+        <div id="panel-menor" class="tab-panel active">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 rounded-lg bg-pjRed/10 text-pjRed flex items-center justify-center shrink-0"><i class="fa-solid fa-child-reaching text-sm"></i></div>
+            <div>
+              <p class="text-xs sm:text-sm font-bold text-pjRed">Pensión para tu hijo o hija menor</p>
+              <p class="text-[10px] sm:text-[11px] text-slate-500">Vínculo familiar directo</p>
+            </div>
+          </div>
+          <ul class="space-y-2 text-[11px] sm:text-xs text-slate-600">
+            <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
+              <span><strong class="text-slate-800">Partida de nacimiento del menor</strong> actualizada. Es el documento clave para acreditar el vínculo familiar.</span>
+            </li>
+            <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
+              <span><strong class="text-slate-800">DNI del demandante</strong> (madre, padre o tutor que presenta la demanda).</span>
+            </li>
+            <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
+              <span><strong class="text-slate-800">Datos del demandado:</strong> nombres completos, domicilio actual e información sobre su centro de trabajo o actividad económica.</span>
+            </li>
+            <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
+              <span><strong class="text-slate-800">Pruebas de gastos del menor:</strong> recibos, facturas, boletas (alimentación, educación, salud, vestido, vivienda).</span>
+            </li>
+          </ul>
+          <div class="mt-3 flex items-start gap-2 bg-amber-50 border border-amber-200/80 rounded-lg p-2.5">
+            <i class="fa-solid fa-circle-info text-amber-600 text-[11px] mt-0.5 shrink-0"></i>
+            <p class="text-[10px] sm:text-[11px] text-amber-900 leading-relaxed">
+              <strong>Recuerda: no se necesita un abogado para interponer una demanda de alimentos para un menor</strong>.
+            </p>
+          </div>
+        </div>
+        <div id="panel-adulto" class="tab-panel">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 rounded-lg bg-pjRed/10 text-pjRed flex items-center justify-center shrink-0"><i class="fa-solid fa-person-cane text-sm"></i></div>
+            <div>
+              <p class="text-xs sm:text-sm font-bold text-pjRed">Pensión para padre o madre adulto mayor</p>
+              <p class="text-[10px] sm:text-[11px] text-slate-500">Vínculo filial</p>
+            </div>
+          </div>
+          <ul class="space-y-2 text-[11px] sm:text-xs text-slate-600">
+            <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
+              <span><strong class="text-slate-800">DNI del adulto mayor</strong> solicitante.</span>
+            </li>
+            <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
+              <span><strong class="text-slate-800">Partida de nacimiento del hijo o hija</strong> para acreditar el vínculo familiar con la persona a la que se le exigirá la pensión.</span>
+            </li>
+            <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
+              <span><strong class="text-slate-800">Datos del demandado:</strong> nombre completo, domicilio e información sobre su empleo o ingresos.</span>
+            </li>
+            <li class="flex gap-2 bg-slate-50 rounded-lg p-2.5 border border-slate-200/70">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-[11px] mt-0.5 shrink-0"></i>
+              <span><strong class="text-slate-800">Evidencias de gastos y necesidades:</strong> documentos médicos, de cuidado, alimentación u otros.</span>
+            </li>
+          </ul>
+          <div class="mt-3 flex items-start gap-2 bg-amber-50 border border-amber-200/80 rounded-lg p-2.5">
+            <i class="fa-solid fa-circle-info text-amber-600 text-[11px] mt-0.5 shrink-0"></i>
+            <p class="text-[10px] sm:text-[11px] text-amber-900 leading-relaxed">
+              <strong>Recuerda: no se necesita un abogado para interponer una demanda de alimentos para un adulto mayor</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="p-3 sm:p-4 border-t border-slate-200 bg-slate-50 shrink-0 flex flex-col sm:flex-row gap-2">
+        <a href="https://www.pj.gob.pe/wps/wcm/connect/ajpvyjc/s_ajpvcyjc/as_acceso_justicia_inicio/as_formularios" target="_blank" rel="noopener noreferrer" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-pjRed to-red-700 text-white font-bold text-[11px] sm:text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5 text-center">
+          <i class="fa-solid fa-file-pdf"></i><span>Descargar formato gratuito (sin abogado)</span><i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80"></i>
+        </a>
+		<a href="https://casillas.pj.gob.pe/sinoe/pages/casillas/solicitudesRegistro/lista-opciones-solicitud.xhtml" target="_blank" rel="noopener noreferrer" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-pjBlue to-pjDarkBlue text-white font-bold text-[11px] sm:text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5 text-center">
+          <i class="fa-solid fa-envelope-open-text"></i><span>Gestionar casilla electrónica</span><i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL REGISTRO DE ALERTA ===== -->
+  <div id="alert-modal" class="fixed inset-0 z-[100] bg-slate-900/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
+    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[94vh] flex flex-col">
+      <div class="relative bg-gradient-to-r from-pjDarkRed via-pjRed to-rose-700 text-white p-4 sm:p-5 shrink-0">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+          <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+          <div class="absolute -left-6 -top-6 w-24 h-24 bg-amber-400/20 rounded-full blur-xl"></div>
+        </div>
+        <div class="flex items-start justify-between gap-3 relative">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 relative">
+              <i class="fa-solid fa-triangle-exclamation text-amber-200 text-xl sm:text-2xl"></i>
+              <span class="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 rounded-full animate-ping"></span>
+              <span class="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 rounded-full"></span>
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-sm sm:text-base md:text-lg font-bold leading-tight">Registrar alerta de emergencia</h3>
+              <p class="text-[10px] sm:text-xs text-amber-200/90 mt-0.5">Tu alerta se enviará a toda la red de orientadoras</p>
+            </div>
+          </div>
+          <button onclick="closeAlertModal()" aria-label="Cerrar modal" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-amber-300/60">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+      <form id="alert-form" onsubmit="submitAlert(event)" class="px-4 sm:px-5 py-4 overflow-y-auto flex-1 space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">
+            <i class="fa-solid fa-list-check text-pjRed text-[10px] mr-1"></i>Tipo de emergencia <span class="text-pjRed">*</span>
+          </label>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+            <label class="cursor-pointer">
+              <input type="radio" name="alert-type" value="Violencia familiar" class="peer sr-only" required>
+              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+                <i class="fa-solid fa-hand-fist text-[11px]"></i>Violencia
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="alert-type" value="Riesgo vital" class="peer sr-only">
+              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+                <i class="fa-solid fa-heart-pulse text-[11px]"></i>Riesgo vital
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="alert-type" value="Desaparición" class="peer sr-only">
+              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+                <i class="fa-solid fa-user-slash text-[11px]"></i>Desaparición
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="alert-type" value="Alimentos / pensión" class="peer sr-only">
+              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+                <i class="fa-solid fa-scale-balanced text-[11px]"></i>Alimentos
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="alert-type" value="Amenaza / hostigamiento" class="peer sr-only">
+              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+                <i class="fa-solid fa-comment-dots text-[11px]"></i>Amenaza
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="alert-type" value="Otro" class="peer sr-only">
+              <div class="px-2 py-2 rounded-lg border border-slate-200 text-[10px] sm:text-[11px] font-semibold text-slate-600 text-center peer-checked:bg-pjRed peer-checked:text-white peer-checked:border-pjRed transition flex flex-col items-center gap-0.5">
+                <i class="fa-solid fa-ellipsis text-[11px]"></i>Otro
+              </div>
+            </label>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">
+            <i class="fa-solid fa-location-dot text-pjRed text-[10px] mr-1"></i>Ubicación <span class="text-pjRed">*</span>
+          </label>
+          <div class="relative">
+            <input type="text" id="alert-location" required
+              class="w-full pl-8 pr-3 py-2.5 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-sm transition"
+              placeholder="Detectando tu ubicación...">
+            <i class="fa-solid fa-location-crosshairs absolute left-2.5 top-1/2 -translate-y-1/2 text-pjRed text-sm"></i>
+            <button type="button" onclick="useMyLocation(event)" title="Usar mi ubicación actual"
+              class="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-pjBlue text-white flex items-center justify-center hover:bg-pjDarkBlue active:scale-90 transition">
+              <i class="fa-solid fa-crosshairs text-xs"></i>
+            </button>
+          </div>
+          <p id="alert-coords" class="text-[10px] text-slate-400 mt-1 flex items-center gap-1 hidden">
+            <i class="fa-solid fa-satellite-dish text-[9px] text-emerald-600"></i>
+            <span id="alert-coords-text"></span>
+          </p>
+          <p id="alert-geo-status" class="text-[10px] text-slate-400 mt-1 flex items-center gap-1">
+            <i class="fa-solid fa-spinner fa-spin text-[9px] text-pjBlue"></i>
+            <span>Detectando tu ubicación automáticamente…</span>
+          </p>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">
+            <i class="fa-solid fa-align-left text-pjRed text-[10px] mr-1"></i>Describe la emergencia <span class="text-pjRed">*</span>
+          </label>
+          <textarea id="alert-description" required rows="3" maxlength="300"
+            class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-sm transition resize-none"
+            placeholder="Cuéntanos brevemente qué está ocurriendo, quién está en riesgo y qué necesitas..."></textarea>
+          <div class="flex justify-between items-center mt-1">
+            <p class="text-[10px] text-slate-400">Sé breve pero claro. Las orientadoras leerán este detalle.</p>
+            <span id="alert-char-count" class="text-[10px] font-semibold text-slate-400">0/300</span>
+          </div>
+        </div>
+      </form>
+      <div class="p-3 sm:p-4 border-t border-slate-200 bg-slate-50 shrink-0 flex gap-2">
+        <button type="button" onclick="closeAlertModal()" class="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-100 transition active:scale-95">Cancelar</button>
+        <button type="submit" form="alert-form" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-red-600 to-pjDarkRed text-white font-bold text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-paper-plane text-[11px]"></i>
+          <span>Enviar alerta</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL CAMBIO DE CONTRASEÑA ===== -->
+  <div id="password-modal" class="fixed inset-0 z-[100] bg-slate-900/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 transition-opacity duration-200">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-100 relative overflow-hidden modal-anim max-h-[94vh] flex flex-col">
+      <div class="relative bg-gradient-to-r from-pjDarkBlue via-pjBlue to-pjDarkRed text-white p-4 sm:p-5 shrink-0">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+          <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+          <div class="absolute -left-6 -top-6 w-24 h-24 bg-amber-400/20 rounded-full blur-xl"></div>
+        </div>
+        <div class="flex items-start justify-between gap-3 relative">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-key text-pjGold text-xl sm:text-2xl"></i>
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-sm sm:text-base md:text-lg font-bold leading-tight">Cambiar contraseña</h3>
+              <p class="text-[10px] sm:text-xs text-amber-200/90 mt-0.5">Actualiza tu clave de acceso de forma segura</p>
+            </div>
+          </div>
+          <button onclick="closePasswordModal()" aria-label="Cerrar modal" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+      <form id="password-form" onsubmit="submitPasswordChange(event)" class="px-4 sm:px-5 py-4 overflow-y-auto flex-1 space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">
+            <i class="fa-solid fa-lock text-pjRed text-[10px] mr-1"></i>Contraseña actual <span class="text-pjRed">*</span>
+          </label>
+          <div class="relative">
+            <input type="password" id="pwd-current" required autocomplete="current-password"
+              class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-sm transition"
+              placeholder="Ingresa tu contraseña actual">
+            <button type="button" onclick="togglePwd('pwd-current', this)" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg text-slate-400 hover:text-pjBlue hover:bg-slate-100 flex items-center justify-center transition" tabindex="-1">
+              <i class="fa-solid fa-eye text-xs"></i>
+            </button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">
+            <i class="fa-solid fa-key text-pjRed text-[10px] mr-1"></i>Nueva contraseña <span class="text-pjRed">*</span>
+          </label>
+          <div class="relative">
+            <input type="password" id="pwd-new" required minlength="8" autocomplete="new-password"
+              class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-sm transition"
+              placeholder="Mínimo 8 caracteres">
+            <button type="button" onclick="togglePwd('pwd-new', this)" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg text-slate-400 hover:text-pjBlue hover:bg-slate-100 flex items-center justify-center transition" tabindex="-1">
+              <i class="fa-solid fa-eye text-xs"></i>
+            </button>
+          </div>
+          <div class="mt-1.5 flex items-center gap-1.5" id="pwd-strength-wrap">
+            <div class="flex-1 h-1.5 rounded-full bg-slate-200 overflow-hidden">
+              <div id="pwd-strength-bar" class="h-full w-0 bg-slate-300 transition-all duration-300"></div>
+            </div>
+            <span id="pwd-strength-text" class="text-[10px] font-semibold text-slate-400 w-16 text-right">—</span>
+          </div>
+          <ul class="mt-1.5 space-y-0.5 text-[10px] text-slate-500">
+            <li id="req-length" class="flex items-center gap-1"><i class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Al menos 8 caracteres</li>
+            <li id="req-upper" class="flex items-center gap-1"><i class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Una letra mayúscula</li>
+            <li id="req-number" class="flex items-center gap-1"><i class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Un número</li>
+            <li id="req-symbol" class="flex items-center gap-1"><i class="fa-solid fa-circle-xmark text-slate-300 text-[9px]"></i>Un símbolo (!@#$...)</li>
+          </ul>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">
+            <i class="fa-solid fa-check-double text-pjRed text-[10px] mr-1"></i>Confirmar nueva contraseña <span class="text-pjRed">*</span>
+          </label>
+          <div class="relative">
+            <input type="password" id="pwd-confirm" required autocomplete="new-password"
+              class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-slate-200 focus:border-pjRed focus:ring-2 focus:ring-pjRed/20 outline-none text-sm transition"
+              placeholder="Repite la nueva contraseña">
+            <button type="button" onclick="togglePwd('pwd-confirm', this)" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg text-slate-400 hover:text-pjBlue hover:bg-slate-100 flex items-center justify-center transition" tabindex="-1">
+              <i class="fa-solid fa-eye text-xs"></i>
+            </button>
+          </div>
+          <p id="pwd-match-msg" class="text-[10px] font-semibold mt-1 hidden"></p>
+        </div>
+        <div class="p-2.5 bg-amber-50 border border-amber-200/80 rounded-xl flex gap-2">
+          <i class="fa-solid fa-circle-info text-amber-600 text-[11px] mt-0.5 shrink-0"></i>
+          <p class="text-[10px] text-amber-900 leading-relaxed">
+            Por seguridad, no compartas tu contraseña. Si olvidaste tu clave actual, contacta al administrador del sistema.
+          </p>
+        </div>
+      </form>
+      <div class="p-3 sm:p-4 border-t border-slate-200 bg-slate-50 shrink-0 flex gap-2">
+        <button type="button" onclick="closePasswordModal()" class="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-100 transition active:scale-95">Cancelar</button>
+        <button type="submit" form="password-form" class="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-pjRed to-pjDarkRed text-white font-bold text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-floppy-disk text-[11px]"></i>
+          <span>Guardar cambios</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CONTENEDOR PRINCIPAL ===== -->
+  <div class="w-full min-h-screen flex flex-col bg-white shadow-2xl relative">
+
+	<!-- HEADER -->
+	<header class="bg-gradient-to-r from-pjDarkRed via-pjRed to-pjBlue text-white pt-4 pb-5 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 shadow-lg relative z-40">
+	  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+		<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
+		<div class="absolute -left-10 -top-10 w-36 h-36 bg-amber-400/10 rounded-full blur-xl"></div>
+	  </div>
+	  <div class="flex items-center justify-between pb-3 border-b border-white/15 mb-3 text-[11px] md:text-xs text-white/80 font-medium tracking-wide relative">
+		<div class="flex items-center gap-1.5">
+		  <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+		  <span>PODER JUDICIAL DEL PERÚ</span>
+		</div>
+		<span class="bg-white/10 px-2 py-0.5 rounded-full text-[10px] md:text-[11px] tracking-wider text-amber-200 font-semibold border border-white/10">PROVINCIA HUAURA</span>
+	  </div>
+	  <div class="flex items-center justify-between gap-3 md:gap-6 relative">
+		<div class="flex items-center gap-3 md:gap-4 flex-1">
+		  <div class="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center p-2 md:p-2.5 shadow-inner shrink-0 group">
+			<i class="fa-solid fa-scale-balanced text-pjGold text-2xl md:text-3xl lg:text-4xl transition-transform duration-300 group-hover:scale-110"></i>
+		  </div>
+		  <div class="min-w-0">
+			<h1 class="text-[13px] sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-bold tracking-tight text-white leading-tight font-cinzel">CORTE SUPERIOR DE JUSTICIA DE HUAURA</h1>
+			<p class="text-[10px] sm:text-[11px] md:text-xs lg:text-sm text-pjGoldLight/90 font-medium tracking-wide flex items-center gap-1 mt-0.5">
+			  <i class="fa-solid fa-circle-check text-pjGold text-xs md:text-sm shrink-0"></i>
+			  <span>Orientadoras Judiciales en Línea</span>
+			</p>
+		  </div>
+		</div>
+		<div class="relative shrink-0" id="user-menu-container" style="z-index: 60;">
+		  <button id="user-menu-btn" onclick="toggleUserMenu(event)" aria-haspopup="true" aria-expanded="false" class="flex items-center gap-2 md:gap-3 pl-2 md:pl-4 border-l border-white/20 cursor-pointer select-none rounded-xl hover:bg-white/5 active:bg-white/10 transition-colors px-2 py-1 -my-1 focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+			<div class="text-right hidden sm:block">
+			  <span class="block text-[11px] md:text-sm font-bold text-white leading-tight">Orientadora</span>
+			  <span class="block text-[9px] md:text-xs font-medium text-amber-200">Judicial Activa</span>
+			</div>
+			<div class="relative">
+			  <div class="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 p-0.5 shadow-md">
+				<div class="w-full h-full rounded-full bg-pjBlue overflow-hidden flex items-center justify-center text-white border border-white/20">
+				  <i class="fa-solid fa-user text-amber-100 text-lg md:text-xl lg:text-2xl"></i>
+				</div>
+			  </div>
+			  <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
+			</div>
+			<i id="user-menu-chevron" class="fa-solid fa-chevron-down text-amber-200 text-sm transition-transform duration-200 hidden sm:block"></i>
+		  </button>
+		  <div id="user-dropdown" class="hidden dropdown-anim absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden" style="z-index: 70;">
+			<div class="px-4 py-3 bg-gradient-to-br from-pjBlue to-pjDarkBlue text-white">
+			  <div class="flex items-center gap-2.5">
+				<div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 p-0.5 shrink-0">
+				  <div class="w-full h-full rounded-full bg-pjBlue flex items-center justify-center"><i class="fa-solid fa-user text-amber-100"></i></div>
+				</div>
+				<div class="min-w-0">
+				  <p class="text-sm font-bold truncate">Orientadora Judicial</p>
+				  <p class="text-[11px] text-amber-200 truncate">orientadora@pj.gob.pe</p>
+				</div>
+			  </div>
+			</div>
+			<div class="py-1.5">
+			  <button onclick="openPasswordModal()" class="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-pjBlue hover:bg-blue-50 active:bg-blue-100 transition-colors">
+				<div class="w-8 h-8 rounded-lg bg-pjBlue/10 text-pjBlue flex items-center justify-center shrink-0"><i class="fa-solid fa-key text-sm"></i></div>
+				<div class="flex-1">
+				  <p class="font-semibold leading-tight">Cambiar contraseña</p>
+				  <p class="text-[11px] text-slate-500">Actualiza tu clave de acceso</p>
+				</div>
+			  </button>
+			  <button onclick="logoutUser()" class="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-pjRed hover:bg-red-50 active:bg-red-100 transition-colors">
+				<div class="w-8 h-8 rounded-lg bg-pjRed/10 text-pjRed flex items-center justify-center shrink-0"><i class="fa-solid fa-right-from-bracket text-sm"></i></div>
+				<div class="flex-1">
+				  <p class="font-semibold leading-tight">Cerrar sesión</p>
+				  <p class="text-[11px] text-slate-500">Salir del sistema de forma segura</p>
+				</div>
+			  </button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</header>
+
+    <!-- MAIN -->
+    <main class="flex-1 w-full px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 py-6 lg:py-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
+
+        <section class="lg:col-span-4 xl:col-span-5 flex flex-col items-center lg:items-stretch">
+          <div class="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200/70 text-amber-900 text-xs md:text-sm px-3.5 py-1.5 rounded-full font-semibold mb-5 shadow-sm self-center lg:self-start">
+            <i class="fa-regular fa-clock text-amber-600 animate-spin" style="animation-duration: 9s;"></i>
+            <span>Atención Inmediata 24/7 en Caso de Vulnerabilidad</span>
+          </div>
+
+          <div class="flex flex-col items-center justify-center relative w-full">
+            <div class="relative flex items-center justify-center">
+              <span id="panic-ring-outer" class="absolute w-44 h-44 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-60 lg:h-60 xl:w-72 xl:h-72 rounded-full bg-red-400/20 hidden pointer-events-none"></span>
+              <span id="panic-ring-inner" class="absolute w-40 h-40 sm:w-44 sm:h-44 md:w-52 md:h-52 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full bg-red-500/10 hidden pointer-events-none"></span>
+
+              <button 
+                id="panic-btn"
+                onclick="openAlertModal()"
+                aria-label="Botón de Pánico para Emergencias Judiciales y Riesgo Vital"
+                class="relative z-10 w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 xl:w-60 xl:h-60 rounded-full bg-gradient-to-b from-red-600 via-rose-700 to-pjDarkRed text-white p-2 shadow-2xl shadow-red-900/40 ring-8 ring-red-100 hover:ring-red-200 active:ring-red-300 transition-all duration-300 transform hover:scale-105 active:scale-95 flex flex-col items-center justify-center group focus:outline-none focus:ring-8 focus:ring-red-300/80 cursor-pointer select-none">
+                
+                <span class="absolute top-2 w-24 md:w-32 xl:w-40 h-12 md:h-16 xl:h-20 bg-white/20 rounded-t-full blur-[2px] pointer-events-none"></span>
+                
+                <div class="flex flex-col items-center justify-center gap-0.5 md:gap-1 relative z-10">
+                  <div class="w-11 h-11 md:w-14 md:h-14 xl:w-16 xl:h-16 flex items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors shadow-inner mb-0.5">
+                    <i id="panic-icon" class="fa-solid fa-triangle-exclamation text-amber-200 text-xl md:text-2xl xl:text-3xl drop-shadow"></i>
+                  </div>
+                  <span class="text-[11px] sm:text-xs md:text-sm xl:text-base font-extrabold tracking-[0.15em] font-cinzel leading-none drop-shadow-md">NOTIFICAR</span>
+                  <span class="text-sm sm:text-base md:text-lg xl:text-xl font-black tracking-wider text-amber-300 leading-none drop-shadow-md">ORIENTADORAS</span>
+                  <span id="panic-badge" class="text-[8px] md:text-[9px] uppercase tracking-widest text-white/85 font-bold mt-1 bg-black/30 px-1.5 py-0.5 rounded-full border border-white/10 leading-none">
+                    Presione Aquí
+                  </span>
+                </div>
+              </button>
+            </div>
+			
+			<p class="text-[11px] md:text-sm lg:text-base text-slate-500 mt-4 lg:mt-6 font-medium text-center max-w-xs md:max-w-sm lg:max-w-md">
+			  Presiona el botón para <strong class="text-pjRed">difundir la emergencia</strong>. Se notificará a las orientadoras para que tomen conocimiento y coordinen el apoyo necesario.
+			</p>
+
+            <!-- ===== PANEL DE ALERTAS EN VIVO ===== -->
+            <div class="w-full mt-5 lg:mt-6 max-w-md lg:max-w-none">
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden">
+                <div class="flex items-center justify-between px-3.5 py-2.5 bg-gradient-to-r from-pjBlue to-pjDarkBlue text-white">
+                  <div class="flex items-center gap-2">
+                    <span class="relative flex items-center justify-center w-5 h-5">
+                      <span id="live-dot" class="absolute w-2.5 h-2.5 rounded-full bg-red-500 live-dot hidden"></span>
+                      <span id="live-ping" class="absolute w-2.5 h-2.5 rounded-full bg-red-400 animate-ping hidden"></span>
+                      <span id="live-idle" class="absolute w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                    </span>
+                    <h3 class="text-xs md:text-sm font-bold tracking-wide">Aviso en vivo</h3>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <span id="alerts-count" class="text-[10px] md:text-xs font-bold bg-white/15 px-2 py-0.5 rounded-full">0 activas</span>
+                    <button onclick="clearResolvedAlerts()" title="Limpiar atendidas/finalizadas" class="w-6 h-6 rounded-md bg-white/10 hover:bg-white/20 active:scale-90 transition flex items-center justify-center">
+                      <i class="fa-solid fa-broom text-[10px]"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div id="alerts-list" class="alerts-scroll max-h-72 overflow-y-auto divide-y divide-slate-100">
+                  <div id="alerts-empty" class="p-6 text-center">
+                    <div class="w-12 h-12 mx-auto rounded-full bg-slate-100 flex items-center justify-center mb-2">
+                      <i class="fa-solid fa-bell-slash text-slate-400 text-lg"></i>
+                    </div>
+                    <p class="text-xs font-semibold text-slate-500">Sin alertas activas</p>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Las alertas que registres aparecerán aquí en tiempo real.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="lg:col-span-8 xl:col-span-7">
+          <div class="flex items-center justify-between mb-3 md:mb-4 px-1">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-pjRed"></span>
+              <h2 class="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-pjBlue uppercase tracking-wider">Servicios de Emergencia y Soporte</h2>
+            </div>
+            <span class="text-[10px] md:text-xs font-semibold text-slate-400">12 Canales Oficiales</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 md:gap-3 lg:gap-4">
+            
+            <button onclick="openServiceModal('pnp')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-shield text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">PNP</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Central 105</span>
+            </button>
+
+            <button onclick="openServiceModal('serenazgo')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-person-military-pointing text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">SERENAZGO</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Seguridad Ciudadana</span>
+            </button>
+
+            <button onclick="openServiceModal('ministerio-publico')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-shield-halved text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">MINISTERIO PÚBLICO</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Turno Fiscal</span>
+            </button>
+
+            <button onclick="openServiceModal('corte-huaura')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-building-columns text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">CORTE DE HUAURA</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Sede Central</span>
+            </button>
+
+            <button onclick="openServiceModal('bomberos')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-fire-extinguisher text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">BOMBEROS</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Línea 116</span>
+            </button>
+
+            <button onclick="openServiceModal('cem')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-umbrella text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">CEM - MUJER</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Línea 100</span>
+            </button>
+
+            <button onclick="openServiceModal('defensa-publica')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-scale-balanced text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">DEFENSA PÚBLICA</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Abogado Gratuito</span>
+            </button>
+
+            <button onclick="openServiceModal('hospitales')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-hospital text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">HOSPITALES</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">SAMU 106</span>
+            </button>
+
+            <button onclick="openServiceModal('indeci')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-cloud-bolt text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">INDECI</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Defensa Civil 115</span>
+            </button>
+
+            <button onclick="openServiceModal('prefectura')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-flag text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">PREFECTURA</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Garantías</span>
+            </button>
+
+            <!-- ===== NUEVO: DEMUNA ===== -->
+            <button onclick="openServiceModal('demuna')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-solid fa-children text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">DEMUNA</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">Niñez y Adolescencia</span>
+            </button>
+
+            <!-- ===== NUEVO: ODANC HUAURA (con WhatsApp) ===== -->
+            <button onclick="openServiceModal('odanc')" class="group bg-gradient-to-br from-pjBlue to-[#0A1D30] hover:from-[#173a5e] hover:to-pjBlue text-white p-3 md:p-4 rounded-2xl shadow-card-soft hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:scale-95 text-center flex flex-col items-center justify-between border border-white/10 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-pjGold/60">
+              <div class="w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-xl bg-white/10 group-hover:bg-white/15 flex items-center justify-center mb-2 transition-transform duration-200 group-hover:scale-110"><i class="fa-brands fa-whatsapp text-white text-xl md:text-2xl lg:text-3xl"></i></div>
+              <span class="text-[11px] md:text-xs lg:text-sm font-bold leading-tight uppercase tracking-tight text-slate-100 group-hover:text-amber-200 transition-colors">ODANC HUAURA</span>
+              <span class="text-[9px] md:text-[10px] text-white/50 mt-1">WhatsApp Directo</span>
+            </button>
+
+          </div>
+
+          <div class="mt-4 md:mt-6 bg-gradient-to-r from-slate-50 to-amber-50/50 rounded-2xl p-3 md:p-4 border border-amber-200/60 flex items-center justify-between gap-3 shadow-sm">
+            <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
+              <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-pjRed text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-scale-balanced text-sm md:text-base"></i></div>
+              <div class="min-w-0">
+                <p class="text-xs md:text-sm font-bold text-pjBlue truncate">¿Dudas con una demanda de alimentos?</p>
+                <p class="text-[10px] md:text-xs text-slate-500 truncate">Revisa documentos y formato oficial según tu caso</p>
+              </div>
+            </div>
+            <button onclick="openAlimentosModal()" class="text-[11px] md:text-sm font-bold text-pjRed hover:text-pjDarkRed bg-white px-2.5 md:px-4 py-1 md:py-2 rounded-lg border border-amber-300 shadow-sm shrink-0 active:scale-95 transition flex items-center gap-1.5">
+              <span>Consultar</span><i class="fa-solid fa-arrow-right text-[10px] md:text-xs"></i>
+            </button>
+          </div>
+
+          <div class="mt-3 md:mt-4 bg-gradient-to-r from-pjBlue to-pjDarkBlue rounded-2xl p-3 md:p-4 shadow-card-soft border border-white/10 relative overflow-hidden">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-pjGold/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 relative">
+              <div class="flex items-center gap-2.5 md:gap-3 min-w-0">
+                <div class="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-white/10 backdrop-blur-md border border-white/15 text-pjGold flex items-center justify-center shrink-0"><i class="fa-solid fa-folder-plus text-sm md:text-base"></i></div>
+                <div class="min-w-0">
+                  <p class="text-xs md:text-sm font-bold text-white leading-tight">Gestión de Ficha de Atención</p>
+                  <p class="text-[10px] md:text-xs text-slate-300 mt-0.5">Registra y consulta en línea las orientaciones brindadas</p>
+                </div>
+              </div>
+              <a href="ficha" class="shrink-0 py-2 px-3 md:px-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-600 text-pjDarkBlue font-bold text-[11px] md:text-xs shadow-md hover:shadow-lg hover:brightness-110 transition active:scale-95 flex items-center justify-center gap-1.5">
+                <span>Acceder</span><i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </a>
+            </div>
+            <div class="mt-3 pt-3 border-t border-white/10 grid grid-cols-2 gap-2 text-center relative">
+              <div>
+                <p class="text-sm md:text-lg font-extrabold text-pjGold leading-none">1,240</p>
+                <p class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-300 mt-1 font-semibold">Fichas registradas</p>
+              </div>
+              <div class="border-l border-white/10">
+                <p class="text-sm md:text-lg font-extrabold text-amber-200 leading-none">320</p>
+                <p class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-300 mt-1 font-semibold">Este mes</p>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </main>
+
+    <footer class="bg-pjBlue border-t-2 border-pjGold/60 text-white px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 py-4 md:py-6 text-center shadow-lg relative w-full">
+      <div class="flex items-center justify-center gap-1.5 text-pjGold mb-1 md:mb-2">
+        <i class="fa-solid fa-heart text-xs md:text-sm"></i>
+        <span class="text-[10px] md:text-xs uppercase font-bold tracking-widest text-amber-200">Justicia Itinerante</span>
+      </div>
+      <p class="text-[11px] sm:text-xs md:text-sm lg:text-base text-slate-200 italic font-medium leading-relaxed max-w-sm md:max-w-2xl lg:max-w-4xl mx-auto">
+        &ldquo;Justicia itinerante y solidaria: orientando con el corazón en cada rincón de Huaura.&rdquo;
+      </p>
+      <div class="mt-2 md:mt-3 text-[9px] md:text-xs text-slate-400 font-normal max-w-3xl mx-auto">
+        Comisión Distrital de Acceso a la Justicia de Personas en Condición de Vulnerabilidad y Justicia en tu Comunidad
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // ============================================================
+    // ===== DATOS DE SERVICIOS CON SEDES =====
+    // ============================================================
+    const servicesData = {
+      'pnp': {
+        title: 'POLICÍA NACIONAL DEL PERÚ',
+        subtitle: 'COMISARÍAS - HUAURA',
+        desc: 'Denuncias, emergencias policiales, violencia familiar y patrullaje en Huacho/Huaura.',
+        sedes: [
+          { nombre: 'Comisaría de Huacho', direccion: 'Av. 28 de Julio 450, Huacho', telefono: '01 232-1520', lat: -11.1067, lng: -77.6045 },
+          { nombre: 'Comisaría de Santa María', direccion: 'Av. Centenario 200, Santa María', telefono: '01 232-1521', lat: -11.0950, lng: -77.5950 },
+          { nombre: 'Comisaría de Salaverry', direccion: 'Calle Los Pinos 120, Salaverry', telefono: '01 232-1522', lat: -11.1200, lng: -77.6150 }
+        ]
+      },
+      'serenazgo': {
+        title: 'SERENAZGO MUNICIPAL',
+        subtitle: 'SEGURIDAD CIUDADANA',
+        desc: 'Patrullaje municipal, apoyo vecinal y respuesta ante incidentes en la vía pública.',
+        sedes: [
+          { nombre: 'Serenazgo Huacho Centro', direccion: 'Plaza de Armas, Huacho', telefono: '(01) 232-1520', lat: -11.1067, lng: -77.6045 },
+          { nombre: 'Serenazgo Santa María', direccion: 'Av. Centenario 300, Santa María', telefono: '(01) 232-1523', lat: -11.0950, lng: -77.5950 }
+        ]
+      },
+      'ministerio-publico': {
+        title: 'MINISTERIO PÚBLICO',
+        subtitle: 'FISCALÍA DE LA NACIÓN',
+        desc: 'Denuncias penales, delitos y turno fiscal permanente en Huaura.',
+        sedes: [
+          { nombre: 'Fiscalía Provincial de Huaura', direccion: 'Av. Grau 500, Huacho', telefono: '01 625-5555', lat: -11.1067, lng: -77.6045 },
+          { nombre: 'Fiscalía de Santa María', direccion: 'Av. Centenario 250, Santa María', telefono: '01 625-5556', lat: -11.0950, lng: -77.5950 }
+        ]
+      },
+      'corte-huaura': {
+        title: 'CORTE DE HUAURA',
+        subtitle: 'PODER JUDICIAL',
+	    desc: 'Mesa de partes, juzgados de guardia, violencia y familia en Huacho/Huaura.',
+	    sedes: [
+          { nombre: 'Módulo Corporativo de Familia', direccion: 'Esquina de la Calle Simón Bolivar N° 601 y Calle José Gálvez N° 305 - Huacho', telefono: '(01) 414-5000 Anexo: 29518', lat: -11.1067, lng: -77.6045 },
+		  { nombre: 'Módulo Penal', direccion: 'Calle Ausejo Salas N° 387 - Huacho', telefono: '(01) 414-5000 Anexo: 29600', lat: -11.1067, lng: -77.6045 },
+		  { nombre: 'Sede de Flagrancia', direccion: 'Av. Mercedes Indacochea N° C, Interior 21 Mz. “C” - Huacho.', telefono: '(01) 414-5000 Anexo: 29600', lat: -11.1067, lng: -77.6045 }
+        ]
+      },
+      'bomberos': {
+        title: 'BOMBEROS DEL PERÚ',
+        subtitle: 'EMERGENCIA 116',
+        desc: 'Compañías de bomberos de Huacho, Barranca y Chancay para rescate y amagos.',
+        sedes: [
+          { nombre: 'Compañía de Bomberos Huacho', direccion: 'Av. 28 de Julio 200, Huacho', telefono: '116', lat: -11.1067, lng: -77.6045 },
+          { nombre: 'Compañía de Bomberos Barranca', direccion: 'Av. Lima 100, Barranca', telefono: '116', lat: -10.7500, lng: -77.7667 }
+        ]
+      },
+      'cem': {
+        title: 'CEM - CENTRO EMERGENCIA MUJER',
+        subtitle: 'LÍNEA 100 MIMP',
+        desc: 'Orientación psicológica, social y legal para mujeres y grupo familiar.',
+        sedes: [
+          { nombre: 'CEM Huacho', direccion: 'Av. Grau 350, Huacho', telefono: '100', lat: -11.1067, lng: -77.6045 }
+        ]
+      },
+      'defensa-publica': {
+        title: 'DEFENSA PÚBLICA',
+        subtitle: 'MINJUSDH',
+        desc: 'Abogados gratuitos de oficio para víctimas, alimentos y asistencia legal.',
+        sedes: [
+          { nombre: 'Defensa Pública Huacho', direccion: 'Av. Grau 450, Huacho', telefono: '1884', lat: -11.1067, lng: -77.6045 }
+        ]
+      },
+      'hospitales': {
+        title: 'HOSPITALES Y SALUD',
+        subtitle: 'SAMU & HOSPITAL HUACHO',
+        desc: 'Atención de emergencias médicas, ambulancias SAMU y postas médicas.',
+        sedes: [
+          { nombre: 'Hospital Regional de Huacho', direccion: 'Av. 28 de Julio 800, Huacho', telefono: '106', lat: -11.1067, lng: -77.6045 },
+          { nombre: 'Posta Médica Santa María', direccion: 'Av. Centenario 150, Santa María', telefono: '106', lat: -11.0950, lng: -77.5950 }
+        ]
+      },
+      'indeci': {
+        title: 'INDECI',
+        subtitle: 'DEFENSA CIVIL',
+        desc: 'Gestión de riesgos de desastres, sismos, inundaciones en la cuenca Huaura.',
+        sedes: [
+          { nombre: 'INDECI Huaura', direccion: 'Av. Grau 700, Huacho', telefono: '115', lat: -11.1067, lng: -77.6045 }
+        ]
+      },
+      'prefectura': {
+        title: 'PREFECTURA REGIONAL',
+        subtitle: 'GARANTÍAS PERSONALES',
+        desc: 'Trámite de garantías personales contra hostigamiento, amenazas y orden público.',
+        sedes: [
+          { nombre: 'Prefectura Huaura', direccion: 'Av. Grau 550, Huacho', telefono: '01 232-1520', lat: -11.1067, lng: -77.6045 }
+        ]
+      },
+      // ===== NUEVO: DEMUNA =====
+      'demuna': {
+        title: 'DEMUNA',
+        subtitle: 'DEFENSORÍA MUNICIPAL DEL NIÑO Y ADOLESCENTE',
+        desc: 'Protección de derechos de niños, niñas y adolescentes, orientación familiar y casos de alimentos en Huaura.',
+        sedes: [
+          { nombre: 'DEMUNA Huacho', direccion: 'Plaza de Armas, Municipalidad de Huacho', telefono: '01 232-1520', lat: -11.1067, lng: -77.6045 },
+          { nombre: 'DEMUNA Santa María', direccion: 'Av. Centenario 300, Santa María', telefono: '01 232-1523', lat: -11.0950, lng: -77.5950 }
+        ]
+      },
+      // ===== NUEVO: ODANC HUAURA (con WhatsApp) =====
+      'odanc': {
+        title: 'ODANC - HUAURA',
+        subtitle: 'ÓRGANO DESCONCENTRADO DE ACCESO A LA JUSTICIA',
+        desc: 'Orientación y acceso a la justicia en Huaura. Atención por WhatsApp para consultas y derivaciones.',
+        sedes: [
+          { nombre: 'ODANC Huaura', direccion: 'Corte Superior de Justicia de Huaura, Huacho', telefono: '51999999999', whatsapp: '51999999999', lat: -11.1067, lng: -77.6045 }
+        ]
+      }
+    };
+
+    // ============================================================
+    // ===== MODAL DE SERVICIOS CON LISTA DE SEDES =====
+    // ============================================================
+    function openServiceModal(type) {
+      const data = servicesData[type];
+      if (!data) return;
+
+      document.getElementById('modal-title').innerText = data.title;
+      document.getElementById('modal-subtitle').innerText = data.subtitle;
+      document.getElementById('modal-desc').innerText = data.desc;
+
+      const listContainer = document.getElementById('modal-sedes-list');
+      listContainer.innerHTML = data.sedes.map((sede) => `
+        <div class="sede-card p-3 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2">
+          <div class="flex items-start gap-2">
+            <div class="w-8 h-8 rounded-lg bg-pjRed/10 text-pjRed flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-location-dot text-xs"></i>
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-bold text-pjBlue leading-tight">${escapeHtml(sede.nombre)}</p>
+              <p class="text-[11px] text-slate-500 mt-0.5 flex items-start gap-1">
+                <i class="fa-solid fa-map-pin text-[9px] mt-0.5 shrink-0"></i>
+                <span>${escapeHtml(sede.direccion)}</span>
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            ${sede.whatsapp ? `
+              <a href="https://wa.me/${sede.whatsapp}?text=${encodeURIComponent('Hola, necesito orientación de ODANC Huaura.')}" 
+                 target="_blank" rel="noopener noreferrer"
+                 class="flex-1 py-2 px-3 rounded-lg bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition active:scale-95 flex items-center justify-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-sm"></i>WhatsApp
+              </a>
+            ` : `
+              <a href="tel:${sede.telefono.replace(/\D/g, '')}" 
+                 class="flex-1 py-2 px-3 rounded-lg bg-pjRed text-white font-bold text-xs hover:bg-pjDarkRed transition active:scale-95 flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-phone text-[11px]"></i>${escapeHtml(sede.telefono)}
+              </a>
+            `}
+            <button onclick="openMap(${sede.lat}, ${sede.lng}, '${sede.nombre.replace(/'/g, "\\'")}')"
+                    class="py-2 px-3 rounded-lg bg-pjBlue text-white font-bold text-xs hover:bg-pjDarkBlue transition active:scale-95 flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-map-location-dot text-[11px]"></i>Ver mapa
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      const modal = document.getElementById('service-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('service-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    // Abre Google Maps en nueva pestaña con las coordenadas de la sede
+    function openMap(lat, lng, nombre) {
+      const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+      window.open(url, '_blank');
+    }
+
+    // ============================================================
+    // ===== ESTADO GLOBAL DE ALERTAS =====
+    // ============================================================
+    let alerts = [];
+    let alertIdCounter = 0;
+
+    let alertLat = null;
+    let alertLng = null;
+
+    // Referencias al botón de pánico y sus anillos
+    const panicBtn = document.getElementById('panic-btn');
+    const panicRingOuter = document.getElementById('panic-ring-outer');
+    const panicRingInner = document.getElementById('panic-ring-inner');
+    const panicIcon = document.getElementById('panic-icon');
+    const panicBadge = document.getElementById('panic-badge');
+    const liveDot = document.getElementById('live-dot');
+    const livePing = document.getElementById('live-ping');
+    const liveIdle = document.getElementById('live-idle');
+
+    function openAlertModal() {
+      const modal = document.getElementById('alert-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('alert-form').reset();
+      document.getElementById('alert-char-count').innerText = '0/300';
+
+      alertLat = null;
+      alertLng = null;
+      const coordsWrap = document.getElementById('alert-coords');
+      const geoStatus = document.getElementById('alert-geo-status');
+      const input = document.getElementById('alert-location');
+      if (coordsWrap) coordsWrap.classList.add('hidden');
+      if (input) input.placeholder = 'Detectando tu ubicación...';
+      if (geoStatus) {
+        geoStatus.classList.remove('hidden');
+        geoStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[9px] text-pjBlue"></i><span>Detectando tu ubicación automáticamente…</span>';
+      }
+
+      setTimeout(() => {
+        const firstRadio = document.querySelector('input[name="alert-type"]');
+        if (firstRadio) firstRadio.focus();
+      }, 100);
+
+      setTimeout(() => useMyLocation(null), 250);
+    }
+
+    function closeAlertModal() {
+      const modal = document.getElementById('alert-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('alert-description').addEventListener('input', function() {
+      document.getElementById('alert-char-count').innerText = this.value.length + '/300';
+    });
+
+    function useMyLocation(e) {
+      const input = document.getElementById('alert-location');
+      const btn = e ? e.currentTarget : null;
+      const coordsWrap = document.getElementById('alert-coords');
+      const coordsText = document.getElementById('alert-coords-text');
+      const geoStatus = document.getElementById('alert-geo-status');
+
+      if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i>';
+      if (geoStatus) {
+        geoStatus.classList.remove('hidden');
+        geoStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[9px] text-pjBlue"></i><span>Detectando tu ubicación…</span>';
+      }
+      input.placeholder = 'Detectando tu ubicación...';
+
+      if (!navigator.geolocation) {
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-crosshairs text-xs"></i>';
+        if (geoStatus) {
+          geoStatus.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-[9px] text-amber-600"></i><span>Tu navegador no soporta geolocalización. Escribe la dirección manualmente.</span>';
+        }
+        input.placeholder = 'Ej: Jr. San Martín 450, Huacho';
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude, accuracy } = pos.coords;
+          alertLat = latitude;
+          alertLng = longitude;
+          input.value = `Lat ${latitude.toFixed(6)}, Lng ${longitude.toFixed(6)}`;
+          if (coordsWrap) coordsWrap.classList.remove('hidden');
+          if (coordsText) {
+            coordsText.innerText = `Lat ${latitude.toFixed(6)}, Lng ${longitude.toFixed(6)} · Precisión ±${Math.round(accuracy)} m`;
+          }
+          if (btn) {
+            btn.innerHTML = '<i class="fa-solid fa-check text-xs"></i>';
+            btn.classList.remove('bg-pjBlue', 'hover:bg-pjDarkBlue');
+            btn.classList.add('bg-emerald-600');
+          }
+          if (geoStatus) {
+            geoStatus.innerHTML = '<i class="fa-solid fa-circle-check text-[9px] text-emerald-600"></i><span>Ubicación detectada correctamente.</span>';
+          }
+        },
+        (err) => {
+          if (btn) btn.innerHTML = '<i class="fa-solid fa-crosshairs text-xs"></i>';
+          input.placeholder = 'Ej: Jr. San Martín 450, Huacho';
+          if (geoStatus) {
+            let msg = 'No pudimos obtener tu ubicación. Escribe la dirección manualmente.';
+            if (err.code === err.PERMISSION_DENIED) msg = 'Permiso de ubicación denegado. Escribe la dirección manualmente o actívalo en tu navegador.';
+            if (err.code === err.TIMEOUT) msg = 'Tiempo de espera agotado. Escribe la dirección manualmente.';
+            geoStatus.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-[9px] text-amber-600"></i><span>${msg}</span>`;
+          }
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
+    function submitAlert(e) {
+      e.preventDefault();
+
+      const typeEl = document.querySelector('input[name="alert-type"]:checked');
+      const location = document.getElementById('alert-location').value.trim();
+      const description = document.getElementById('alert-description').value.trim();
+
+      if (!typeEl) { alert('Selecciona el tipo de emergencia.'); return; }
+      if (!location) { alert('Indica la ubicación de la emergencia.'); return; }
+      if (!description) { alert('Describe brevemente la emergencia.'); return; }
+
+      const newAlert = {
+        id: ++alertIdCounter,
+        type: typeEl.value,
+        location,
+        lat: alertLat,
+        lng: alertLng,
+        description,
+        time: new Date(),
+        status: 'activa'
+      };
+
+      alerts.unshift(newAlert);
+      renderAlerts();
+
+      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+      closeAlertModal();
+      document.getElementById('alerts-list').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      showToast('✅ Alerta enviada. Las orientadoras han sido notificadas.');
+    }
+
+    function timeAgo(date) {
+      const sec = Math.floor((Date.now() - date.getTime()) / 1000);
+      if (sec < 10) return 'ahora';
+      if (sec < 60) return `hace ${sec}s`;
+      const min = Math.floor(sec / 60);
+      if (min < 60) return `hace ${min} min`;
+      const hr = Math.floor(min / 60);
+      return `hace ${hr} h`;
+    }
+
+    // ============================================================
+    // ===== CONTROL DE ANIMACIÓN DEL BOTÓN DE PÁNICO =====
+    // ============================================================
+    function updatePanicAnimation() {
+      const active = alerts.filter(a => a.status === 'activa').length;
+      const total = alerts.length;
+
+      if (active > 0) {
+        // Hay alertas activas: mostrar anillos animados + pulso en botón
+        if (panicRingOuter) {
+          panicRingOuter.classList.remove('hidden');
+          panicRingOuter.classList.add('panic-ring-active');
+        }
+        if (panicRingInner) {
+          panicRingInner.classList.remove('hidden');
+        }
+        if (panicBtn) {
+          panicBtn.classList.add('panic-active');
+        }
+        if (liveDot) liveDot.classList.remove('hidden');
+        if (livePing) livePing.classList.remove('hidden');
+        if (liveIdle) liveIdle.classList.add('hidden');
+      } else {
+        // Sin alertas activas: detener toda animación
+        if (panicRingOuter) {
+          panicRingOuter.classList.add('hidden');
+          panicRingOuter.classList.remove('panic-ring-active');
+        }
+        if (panicRingInner) {
+          panicRingInner.classList.add('hidden');
+        }
+        if (panicBtn) {
+          panicBtn.classList.remove('panic-active');
+        }
+        if (liveDot) liveDot.classList.add('hidden');
+        if (livePing) livePing.classList.add('hidden');
+        if (liveIdle) liveIdle.classList.remove('hidden');
+      }
+
+      // Actualizar badge del botón
+      if (panicBadge) {
+        if (total === 0) {
+          panicBadge.innerText = 'Presione Aquí';
+          panicBadge.className = 'text-[8px] md:text-[9px] uppercase tracking-widest text-white/85 font-bold mt-1 bg-black/30 px-1.5 py-0.5 rounded-full border border-white/10 leading-none';
+        } else if (active > 0) {
+          panicBadge.innerText = `${active} activa${active === 1 ? '' : 's'}`;
+          panicBadge.className = 'text-[8px] md:text-[9px] uppercase tracking-widest text-white font-bold mt-1 bg-red-600 px-1.5 py-0.5 rounded-full border border-white/30 leading-none animate-pulse';
+        } else {
+          panicBadge.innerText = 'Sin activas';
+          panicBadge.className = 'text-[8px] md:text-[9px] uppercase tracking-widest text-white/85 font-bold mt-1 bg-emerald-600 px-1.5 py-0.5 rounded-full border border-white/20 leading-none';
+        }
+      }
+
+      // Actualizar ícono del botón si todas están finalizadas
+      if (panicIcon) {
+        if (total > 0 && active === 0) {
+          panicIcon.className = 'fa-solid fa-circle-check text-emerald-200 text-xl md:text-2xl xl:text-3xl drop-shadow';
+        } else {
+          panicIcon.className = 'fa-solid fa-triangle-exclamation text-amber-200 text-xl md:text-2xl xl:text-3xl drop-shadow';
+        }
+      }
+    }
+
+    // ============================================================
+    // ===== RENDER DE ALERTAS CON ACCIONES POR REGISTRO =====
+    // ============================================================
+    function renderAlerts() {
+      const list = document.getElementById('alerts-list');
+      const empty = document.getElementById('alerts-empty');
+      const counter = document.getElementById('alerts-count');
+
+      const active = alerts.filter(a => a.status === 'activa').length;
+      counter.innerText = `${active} activa${active === 1 ? '' : 's'}`;
+
+      if (alerts.length === 0) {
+        empty.classList.remove('hidden');
+        list.querySelectorAll('.alert-item').forEach(el => el.remove());
+        updatePanicAnimation();
+        return;
+      }
+
+      empty.classList.add('hidden');
+      list.querySelectorAll('.alert-item').forEach(el => el.remove());
+
+      alerts.forEach(a => {
+        const isActive = a.status === 'activa';
+        const isAtendida = a.status === 'atendida';
+        const isFinalizada = a.status === 'finalizada';
+        const hasCoords = (a.lat != null && a.lng != null);
+
+        // Badge de estado
+        let statusBadge = '';
+        if (isActive) {
+          statusBadge = `<span class="text-[9px] font-bold text-red-700 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-md flex items-center gap-1"><i class="fa-solid fa-circle text-[6px] animate-pulse"></i>Activa</span>`;
+        } else if (isAtendida) {
+          statusBadge = `<span class="text-[9px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md flex items-center gap-1"><i class="fa-solid fa-clock text-[8px]"></i>Atendida</span>`;
+        } else if (isFinalizada) {
+          statusBadge = `<span class="text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-md flex items-center gap-1"><i class="fa-solid fa-circle-check text-[8px]"></i>Finalizada</span>`;
+        }
+
+        // Botones de acción según estado
+        let actionButtons = '';
+        if (isActive) {
+          actionButtons = `
+            <button onclick="setAlertStatus(${a.id}, 'atendida')" class="text-[9px] font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded-md transition active:scale-95 flex items-center gap-1">
+              <i class="fa-solid fa-check text-[8px]"></i>Atender
+            </button>
+            <button onclick="setAlertStatus(${a.id}, 'finalizada')" class="text-[9px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-1.5 py-0.5 rounded-md transition active:scale-95 flex items-center gap-1">
+              <i class="fa-solid fa-flag-checkered text-[8px]"></i>Finalizar
+            </button>
+          `;
+        } else if (isAtendida) {
+          actionButtons = `
+            <button onclick="setAlertStatus(${a.id}, 'activa')" class="text-[9px] font-bold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 px-1.5 py-0.5 rounded-md transition active:scale-95 flex items-center gap-1">
+              <i class="fa-solid fa-rotate-left text-[8px]"></i>Reactivar
+            </button>
+            <button onclick="setAlertStatus(${a.id}, 'finalizada')" class="text-[9px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-1.5 py-0.5 rounded-md transition active:scale-95 flex items-center gap-1">
+              <i class="fa-solid fa-flag-checkered text-[8px]"></i>Finalizar
+            </button>
+          `;
+        } else if (isFinalizada) {
+          actionButtons = `
+            <button onclick="setAlertStatus(${a.id}, 'activa')" class="text-[9px] font-bold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 px-1.5 py-0.5 rounded-md transition active:scale-95 flex items-center gap-1">
+              <i class="fa-solid fa-rotate-left text-[8px]"></i>Reactivar
+            </button>
+            <button onclick="deleteAlert(${a.id})" class="text-[9px] font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-1.5 py-0.5 rounded-md transition active:scale-95 flex items-center gap-1">
+              <i class="fa-solid fa-trash text-[8px]"></i>Eliminar
+            </button>
+          `;
+        }
+
+        const div = document.createElement('div');
+        div.className = `alert-item p-3 ${isActive ? 'pulse-border' : ''} bg-white ${isFinalizada ? 'opacity-70' : ''}`;
+        div.innerHTML = `
+          <div class="flex items-start gap-2.5">
+            <div class="w-8 h-8 rounded-lg ${isActive ? 'bg-pjRed/10 text-pjRed' : isAtendida ? 'bg-amber-100 text-amber-600' : 'bg-emerald-100 text-emerald-600'} flex items-center justify-center shrink-0">
+              <i class="fa-solid ${isActive ? 'fa-triangle-exclamation' : isAtendida ? 'fa-clock' : 'fa-circle-check'} text-xs"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[10px] font-semibold text-slate-600 truncate">${escapeHtml(a.type)}</span>
+                <span class="text-[9px] text-slate-400 font-medium shrink-0">${timeAgo(a.time)}</span>
+              </div>
+              <p class="text-[11px] text-slate-700 font-medium mt-1 line-clamp-2 leading-snug">${escapeHtml(a.description)}</p>
+              <div class="flex items-center gap-1.5 mt-1.5 text-[10px] text-slate-500">
+                <i class="fa-solid fa-location-dot text-[9px] text-slate-400"></i>
+                <span class="truncate">${escapeHtml(a.location)}</span>
+              </div>
+              ${hasCoords ? `
+                <div class="flex items-center gap-1 mt-0.5 text-[9px] text-emerald-700 font-semibold">
+                  <i class="fa-solid fa-satellite-dish text-[8px]"></i>
+                  <span>${a.lat.toFixed(5)}, ${a.lng.toFixed(5)}</span>
+                </div>
+              ` : ''}
+              <div class="flex items-center justify-between gap-1.5 mt-2 flex-wrap">
+                <div>${statusBadge}</div>
+                <div class="flex items-center gap-1 flex-wrap">${actionButtons}</div>
+              </div>
+            </div>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+
+      updatePanicAnimation();
+    }
+
+    // ============================================================
+    // ===== CAMBIO DE ESTADO POR REGISTRO =====
+    // ============================================================
+    function setAlertStatus(id, newStatus) {
+      const a = alerts.find(x => x.id === id);
+      if (!a) return;
+      const labels = {
+        activa: 'reactivada',
+        atendida: 'marcada como atendida',
+        finalizada: 'finalizada'
+      };
+      a.status = newStatus;
+      renderAlerts();
+      showToast(`✅ Alerta ${labels[newStatus] || 'actualizada'}.`);
+    }
+
+    function deleteAlert(id) {
+      if (!confirm('¿Eliminar definitivamente esta alerta del panel?')) return;
+      alerts = alerts.filter(a => a.id !== id);
+      renderAlerts();
+      showToast('🗑️ Alerta eliminada.');
+    }
+
+    function clearResolvedAlerts() {
+      const resolved = alerts.filter(a => a.status !== 'activa').length;
+      if (resolved === 0) { showToast('No hay alertas atendidas o finalizadas para limpiar.'); return; }
+      if (!confirm(`¿Eliminar ${resolved} alerta(s) atendida(s)/finalizada(s) del panel?`)) return;
+      alerts = alerts.filter(a => a.status === 'activa');
+      renderAlerts();
+      showToast('🧹 Alertas cerradas eliminadas.');
+    }
+
+    // Refresca tiempos cada 30s
+    setInterval(() => { if (alerts.length) renderAlerts(); }, 30000);
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[s]));
+    }
+
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 z-[110] bg-pjBlue text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-2xl border border-white/10 flex items-center gap-2';
+      t.style.animation = 'alertIn 0.3s ease-out';
+      t.innerHTML = `<i class="fa-solid fa-bell text-amber-300"></i><span>${msg}</span>`;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; }, 2400);
+      setTimeout(() => t.remove(), 2800);
+    }
+
+    // ============================================================
+    // ===== MODAL DE ALIMENTOS =====
+    // ============================================================
+    function openAlimentosModal() {
+      const modal = document.getElementById('alimentos-modal');
+      modal.classList.remove('hidden'); modal.classList.add('flex');
+      switchAlimentosTab('menor');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeAlimentosModal() {
+      const modal = document.getElementById('alimentos-modal');
+      modal.classList.add('hidden'); modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function switchAlimentosTab(tab) {
+      const tabMenor = document.getElementById('tab-menor');
+      const tabAdulto = document.getElementById('tab-adulto');
+      const panelMenor = document.getElementById('panel-menor');
+      const panelAdulto = document.getElementById('panel-adulto');
+      if (tab === 'menor') {
+        tabMenor.classList.add('active'); tabAdulto.classList.remove('active');
+        panelMenor.classList.add('active'); panelAdulto.classList.remove('active');
+      } else {
+        tabAdulto.classList.add('active'); tabMenor.classList.remove('active');
+        panelAdulto.classList.add('active'); panelMenor.classList.remove('active');
+      }
+    }
+
+    // ============================================================
+    // ===== MENÚ DE USUARIO =====
+    // ============================================================
+    const userMenuBtn = document.getElementById('user-menu-btn');
+    const userDropdown = document.getElementById('user-dropdown');
+    const userMenuChevron = document.getElementById('user-menu-chevron');
+    const userMenuContainer = document.getElementById('user-menu-container');
+
+    function toggleUserMenu(e) {
+      e.stopPropagation();
+      const isOpen = !userDropdown.classList.contains('hidden');
+      if (isOpen) closeUserMenu();
+      else {
+        userDropdown.classList.remove('hidden');
+        userMenuBtn.setAttribute('aria-expanded', 'true');
+        if (userMenuChevron) userMenuChevron.style.transform = 'rotate(180deg)';
+      }
+    }
+    function closeUserMenu() {
+      userDropdown.classList.add('hidden');
+      userMenuBtn.setAttribute('aria-expanded', 'false');
+      if (userMenuChevron) userMenuChevron.style.transform = 'rotate(0deg)';
+    }
+    document.addEventListener('click', function(e) {
+      if (!userMenuContainer.contains(e.target)) closeUserMenu();
+    });
+
+    function logoutUser() {
+      closeUserMenu();
+      if (confirm("¿Está seguro que desea cerrar sesión en el sistema de Orientación Judicial?")) {
+        try { localStorage.removeItem('pj_session'); sessionStorage.clear(); } catch (err) {}
+        alert("Sesión cerrada correctamente.");
+      }
+    }
+
+    // ============================================================
+    // ===== CAMBIO DE CONTRASEÑA =====
+    // ============================================================
+    function openPasswordModal() {
+      closeUserMenu();
+      const modal = document.getElementById('password-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('password-form').reset();
+      updatePasswordStrength('');
+      document.getElementById('pwd-match-msg').classList.add('hidden');
+      setTimeout(() => document.getElementById('pwd-current').focus(), 100);
+    }
+
+    function closePasswordModal() {
+      const modal = document.getElementById('password-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function togglePwd(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const icon = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+
+    function evaluatePassword(pwd) {
+      return {
+        length: pwd.length >= 8,
+        upper: /[A-Z]/.test(pwd),
+        number: /[0-9]/.test(pwd),
+        symbol: /[^A-Za-z0-9]/.test(pwd)
+      };
+    }
+
+    function updatePasswordStrength(pwd) {
+      const req = evaluatePassword(pwd);
+      const map = {
+        'req-length': req.length,
+        'req-upper': req.upper,
+        'req-number': req.number,
+        'req-symbol': req.symbol
+      };
+      Object.entries(map).forEach(([id, ok]) => {
+        const li = document.getElementById(id);
+        const icon = li.querySelector('i');
+        icon.className = ok
+          ? 'fa-solid fa-circle-check text-emerald-500 text-[9px]'
+          : 'fa-solid fa-circle-xmark text-slate-300 text-[9px]';
+      });
+
+      const score = Object.values(req).filter(Boolean).length;
+      const bar = document.getElementById('pwd-strength-bar');
+      const txt = document.getElementById('pwd-strength-text');
+      const widths = ['0%', '25%', '50%', '75%', '100%'];
+      const colors = ['bg-slate-300', 'bg-red-500', 'bg-amber-500', 'bg-lime-500', 'bg-emerald-500'];
+      const labels = ['—', 'Muy débil', 'Débil', 'Buena', 'Fuerte'];
+      bar.style.width = widths[score];
+      bar.className = 'h-full transition-all duration-300 ' + colors[score];
+      txt.innerText = labels[score];
+      txt.className = 'text-[10px] font-semibold w-16 text-right ' +
+        (score >= 3 ? 'text-emerald-600' : score === 2 ? 'text-amber-600' : 'text-slate-400');
+    }
+
+    document.getElementById('pwd-new').addEventListener('input', function() {
+      updatePasswordStrength(this.value);
+      checkPasswordMatch();
+    });
+    document.getElementById('pwd-confirm').addEventListener('input', checkPasswordMatch);
+
+    function checkPasswordMatch() {
+      const newPwd = document.getElementById('pwd-new').value;
+      const confirmPwd = document.getElementById('pwd-confirm').value;
+      const msg = document.getElementById('pwd-match-msg');
+      if (!confirmPwd) { msg.classList.add('hidden'); return; }
+      msg.classList.remove('hidden');
+      if (newPwd === confirmPwd) {
+        msg.innerText = '✓ Las contraseñas coinciden';
+        msg.className = 'text-[10px] font-semibold mt-1 text-emerald-600';
+      } else {
+        msg.innerText = '✗ Las contraseñas no coinciden';
+        msg.className = 'text-[10px] font-semibold mt-1 text-red-600';
+      }
+    }
+
+    function submitPasswordChange(e) {
+      e.preventDefault();
+      const current = document.getElementById('pwd-current').value;
+      const newPwd = document.getElementById('pwd-new').value;
+      const confirmPwd = document.getElementById('pwd-confirm').value;
+
+      if (!current) { alert('Ingresa tu contraseña actual.'); return; }
+
+      const req = evaluatePassword(newPwd);
+      if (!req.length || !req.upper || !req.number || !req.symbol) {
+        alert('La nueva contraseña debe cumplir con todos los requisitos de seguridad.');
+        return;
+      }
+
+      if (newPwd === current) {
+        alert('La nueva contraseña no puede ser igual a la actual.');
+        return;
+      }
+
+      if (newPwd !== confirmPwd) {
+        alert('La nueva contraseña y su confirmación no coinciden.');
+        return;
+      }
+
+      showToast('✅ Contraseña actualizada correctamente (demo).');
+      closePasswordModal();
+    }
+
+    // ============================================================
+    // ===== ESC: CIERRA MENÚ DE USUARIO =====
+    // ============================================================
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeUserMenu();
+      }
+    });
+
+    // ============================================================
+    // ===== INICIALIZAR ANIMACIÓN (sin alertas = botón en reposo) =====
+    // ============================================================
+    updatePanicAnimation();
+  </script>
+
+</body>
+</html>
